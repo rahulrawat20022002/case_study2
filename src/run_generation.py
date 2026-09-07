@@ -127,10 +127,28 @@ def main():
     ap.add_argument("--configs", nargs="*", help="subset of configuration names")
     ap.add_argument("--limit", type=int, default=None, help="first N rows (sanity)")
     ap.add_argument("--rows", nargs="*", help="specific test-row ids")
+    # dev overrides so the notebook can switch generator without editing the yaml
+    ap.add_argument("--provider", default=None,
+                    help="override generation.provider (e.g. openai_compatible)")
+    ap.add_argument("--model", default=None, help="override generation.model")
+    ap.add_argument("--base-url", default=None,
+                    help="override openai_compatible.base_url")
+    ap.add_argument("--api-key-env", default=None,
+                    help="override openai_compatible.api_key_env")
     args = ap.parse_args()
 
     cfg = yaml.safe_load(open(args.config_file))
     gen_cfg = cfg["generation"]
+    if args.provider:
+        gen_cfg["provider"] = args.provider
+    if args.model:
+        gen_cfg["model"] = args.model
+    if args.base_url or args.api_key_env:
+        oc = gen_cfg.setdefault("openai_compatible", {})
+        if args.base_url:
+            oc["base_url"] = args.base_url
+        if args.api_key_env:
+            oc["api_key_env"] = args.api_key_env
     configs = cfg["configurations"]
     if args.configs:
         configs = [c for c in configs if c["name"] in args.configs]
