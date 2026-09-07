@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="720" viewBox="0 0 1120 720" font-family="Helvetica,Arial,sans-serif">
+  <defs>
+    <marker id="arw" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#334155"/>
+    </marker>
+    <style>
+      .box{fill:#fff;stroke:#334155;stroke-width:1.5;rx:8}
+      .t{fill:#0f172a;font-size:14px}
+      .tb{fill:#0f172a;font-size:14px;font-weight:bold}
+      .s{fill:#475569;font-size:12px}
+      .lbl{fill:#334155;font-size:12px;font-style:italic}
+      .edge{stroke:#334155;stroke-width:1.5;fill:none;marker-end:url(#arw)}
+      .band{fill:#f1f5f9;stroke:#cbd5e1;stroke-width:1;stroke-dasharray:4 3}
+      .hl{fill:#fef3c7;stroke:#d97706;stroke-width:1.5}
+      .eval{fill:#eef2ff;stroke:#6366f1;stroke-width:1.5}
+    </style>
+  </defs>
+
+  <text x="24" y="34" class="tb" font-size="18">Case Study 2 — shared retrieval pipeline and the three configurations</text>
+
+  <!-- Corpus build band -->
+  <rect x="24" y="56" width="1072" height="150" class="band" rx="8"/>
+  <text x="40" y="78" class="s" font-weight="bold">CORPUS BUILD (once)</text>
+
+  <rect x="40" y="92" width="180" height="96" class="box" rx="8"/>
+  <text x="52" y="118" class="tb">Commission</text>
+  <text x="52" y="136" class="tb">guidelines (PDF)</text>
+  <text x="52" y="160" class="s">Annex III document,</text>
+  <text x="52" y="176" class="s">May 2026 (frozen)</text>
+
+  <rect x="270" y="92" width="200" height="96" class="hl" rx="8"/>
+  <text x="284" y="116" class="tb">Structural chunking</text>
+  <text x="284" y="136" class="s">1 chunk / numbered para</text>
+  <text x="284" y="154" class="s">Worked examples HELD</text>
+  <text x="284" y="170" class="s">OUT (no label leakage)</text>
+  <text x="284" y="186" class="lbl">361 normative chunks</text>
+
+  <rect x="520" y="92" width="180" height="96" class="box" rx="8"/>
+  <text x="532" y="122" class="tb">Embed</text>
+  <text x="532" y="144" class="s">bge-base-en-v1.5</text>
+  <text x="532" y="162" class="s">768-dim, normalised</text>
+
+  <rect x="750" y="92" width="200" height="96" class="box" rx="8"/>
+  <text x="762" y="118" class="tb">Index</text>
+  <text x="762" y="140" class="s">Chroma (dense) +</text>
+  <text x="762" y="158" class="s">BM25 (sparse, in-mem)</text>
+
+  <line x1="220" y1="140" x2="270" y2="140" class="edge"/>
+  <line x1="470" y1="140" x2="520" y2="140" class="edge"/>
+  <line x1="700" y1="140" x2="750" y2="140" class="edge"/>
+
+  <!-- Test input -->
+  <rect x="40" y="250" width="180" height="70" class="box" rx="8"/>
+  <text x="52" y="278" class="tb">Test input</text>
+  <text x="52" y="300" class="s">system description</text>
+  <text x="52" y="316" class="s">(1 of 215)</text>
+
+  <!-- Shared retrieval -->
+  <rect x="270" y="240" width="230" height="92" class="box" rx="8"/>
+  <text x="284" y="266" class="tb">Hybrid retrieval (shared)</text>
+  <text x="284" y="288" class="s">BM25 + dense, α = 0.5</text>
+  <text x="284" y="306" class="s">top-5 to generator</text>
+  <text x="284" y="322" class="s">top-10 logged</text>
+
+  <line x1="220" y1="285" x2="270" y2="285" class="edge"/>
+  <line x1="860" y1="188" x2="860" y2="240" class="edge"/>
+  <!-- retrieval forks to the two RAG configs only -->
+  <path d="M500,300 L530,300 L530,362 L560,362" class="edge"/>
+  <path d="M500,315 L520,315 L520,435 L560,435" class="edge"/>
+  <!-- baseline 1 bypasses retrieval: description only -->
+  <path d="M220,258 L240,228 L546,228 L556,278" class="edge" stroke-dasharray="5 4"/>
+  <text x="300" y="222" class="lbl">no retrieval — description only</text>
+
+  <!-- Three configurations -->
+  <text x="560" y="250" class="s" font-weight="bold">THREE CONFIGURATIONS — same retrieval, same generator, only the prompt differs</text>
+
+  <rect x="560" y="262" width="500" height="60" class="box" rx="8"/>
+  <text x="574" y="286" class="tb">Baseline 1 — plain LLM</text>
+  <text x="574" y="306" class="s">no retrieval · label + short reason only</text>
+
+  <rect x="560" y="332" width="500" height="60" class="box" rx="8"/>
+  <text x="574" y="356" class="tb">Baseline 2 — standard RAG</text>
+  <text x="574" y="376" class="s">top-5 passages + generic prompt · label + grounded explanation</text>
+
+  <rect x="560" y="402" width="500" height="66" class="hl" rx="8"/>
+  <text x="574" y="426" class="tb">Proposed agent — structured RAG</text>
+  <text x="574" y="446" class="s">same passages · prompt walks Art 6(2) / Annex III / Art 6(3) filter</text>
+  <text x="574" y="462" class="s">label + grounded explanation</text>
+
+  <!-- Generator: shared by all three configurations -->
+  <rect x="700" y="500" width="220" height="60" class="box" rx="8"/>
+  <text x="714" y="524" class="tb">Generator (shared)</text>
+  <text x="714" y="544" class="s">claude-sonnet-4-6 · T=0</text>
+  <!-- each configuration runs on the same generator (routed via right margin) -->
+  <path d="M1060,292 L1092,292 L1092,516 L920,522" class="edge"/>
+  <path d="M1060,362 L1084,362 L1084,528 L920,530" class="edge"/>
+  <path d="M1060,435 L1076,435 L1076,538 L920,538" class="edge"/>
+
+  <!-- Evaluation band (Phase 3) -->
+  <rect x="24" y="500" width="640" height="196" class="band" rx="8"/>
+  <text x="40" y="522" class="s" font-weight="bold">EVALUATION (Phase 3) — two independent axes</text>
+
+  <rect x="40" y="536" width="290" height="70" class="eval" rx="8"/>
+  <text x="54" y="562" class="tb">Judge — RAGAS faithfulness</text>
+  <text x="54" y="584" class="s">separate non-Anthropic model</text>
+  <text x="54" y="600" class="s">explanation vs retrieved passages</text>
+
+  <rect x="40" y="616" width="290" height="64" class="eval" rx="8"/>
+  <text x="54" y="640" class="tb">Label — correctness lookup</text>
+  <text x="54" y="662" class="s">pred vs frozen ground truth (no model)</text>
+
+  <rect x="360" y="560" width="290" height="110" class="box" rx="8"/>
+  <text x="374" y="584" class="tb">Four-bucket matrix</text>
+  <text x="374" y="606" class="s">right + faithful   ·   right + unfaithful</text>
+  <text x="374" y="624" class="s">wrong + faithful  ·   wrong + unfaithful</text>
+  <text x="374" y="648" class="lbl">off-diagonal buckets = the findings</text>
+  <text x="374" y="666" class="s">"faithful but wrong" / "right but unfaithful"</text>
+
+  <path d="M700,540 L340,560 L330,571" class="edge"/>
+  <path d="M700,545 L330,648" class="edge"/>
+  <line x1="330" y1="571" x2="360" y2="600" class="edge"/>
+  <line x1="330" y1="648" x2="360" y2="640" class="edge"/>
+</svg>

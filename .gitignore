@@ -1,0 +1,17 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+
+# Rebuildable / generated (the notebook regenerates these on the uni server)
+results/chroma/
+results/runs/
+results/scoring/
+
+# Secrets - never commit API keys
+.env
+*.key

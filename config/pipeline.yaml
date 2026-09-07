@@ -1,0 +1,72 @@
+# Case Study 2 - Phase 2 pipeline configuration (frozen where noted).
+# One place for every knob so a run is reproducible from this file alone.
+
+corpus:
+  # Normative text only. Worked examples (a/b/c blocks + inline verdict
+  # enumerations) are held out to prevent label leakage. See build_corpus.py.
+  source_pdf: "data/guidelines/Draft_Guidelines_on_the_classification_of_high_risk_AI_Annex_III.pdf"
+  chunks_file: "results/corpus_chunks.jsonl"
+  # Article 6(1)/Annex I (section III) excluded: out of scope per frozen anchor.
+  kept_sections: ["2", "3"]   # 2.x general principles + filter, 3.x Annex III areas
+  max_chars: 1800             # split longer paragraphs to fit the encoder window
+
+embedding:
+  # FROZEN. Open source, CPU-friendly, reproducible. 768-dim.
+  model: "BAAI/bge-base-en-v1.5"
+  dimension: 768
+  # bge retrieval convention: prepend this to QUERIES only, not to passages.
+  query_prefix: "Represent this sentence for searching relevant passages: "
+  normalize: true
+
+vector_store:
+  backend: "chroma"           # chosen over FAISS: persistent, metadata built in
+  path: "results/chroma"
+  collection: "eu_ai_act_guidelines"
+
+retrieval:
+  # FROZEN. Hybrid BM25 + dense, equal weighting (PolicyNeural default).
+  hybrid_alpha: 0.5           # alpha*dense + (1-alpha)*sparse, both min-max normed
+  top_k: 5                    # passages handed to the generator
+  log_top_k: 10               # also logged per row for post-hoc analysis, no re-run
+
+generation:
+  # FROZEN model. Generator = claude-sonnet-4-6. Same settings across all three
+  # configurations (only the prompt differs).
+  model: "claude-sonnet-4-6"
+  temperature: 0.0            # deterministic-as-possible; classification, not prose
+  max_tokens: 1024
+  top_p: 1.0
+  # Access path. "anthropic" = first-party API (needs console billing).
+  # "vertex" = same model via Google Vertex AI, billed to your GCP project.
+  provider: "anthropic"
+  vertex:
+    project_id: "YOUR_GCP_PROJECT_ID"   # gcloud config get-value project
+    region: "global"                    # or europe-west1 / us-east5 (10% premium)
+    # Vertex sometimes needs an @version suffix; confirm in Model Garden.
+    # Leave null to use `model` above as-is.
+    model_override: null
+
+  # DEV-ONLY bridge while the university API access is pending. Set provider to
+  # "openai_compatible" and `model` to a free model to run the FULL pipeline on a
+  # free key. The FROZEN generator for the graded results stays claude-sonnet-4-6
+  # (provider "anthropic"); free-model runs are for debugging, NOT results.
+  openai_compatible:
+    # Gemini free tier (different model family from the judge, good for dev):
+    base_url: "https://generativelanguage.googleapis.com/v1beta/openai/"
+    api_key_env: "GEMINI_API_KEY"
+    # Groq free tier alternative:
+    #   base_url: "https://api.groq.com/openai/v1"
+    #   api_key_env: "GROQ_API_KEY"
+
+configurations:
+  # The three systems compared, one shared retrieval pipeline.
+  - name: "baseline1_plain_llm"
+    retrieval: false          # no retrieved context; label + short reason only
+  - name: "baseline2_standard_rag"
+    retrieval: true           # top-k passages + generic prompt, no legal procedure
+  - name: "agent_structured"
+    retrieval: true           # same passages, prompt walks 6(2)/Annex III/6(3)
+
+paths:
+  test_set: "test_set.jsonl"
+  runs_dir: "results/runs"
