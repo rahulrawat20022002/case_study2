@@ -33,7 +33,7 @@
   <text x="284" y="136" class="s">1 chunk / numbered para</text>
   <text x="284" y="154" class="s">Worked examples HELD</text>
   <text x="284" y="170" class="s">OUT (no label leakage)</text>
-  <text x="284" y="186" class="lbl">361 normative chunks</text>
+  <text x="284" y="186" class="lbl">400 normative chunks</text>
 
   <rect x="520" y="92" width="180" height="96" class="box" rx="8"/>
   <text x="532" y="122" class="tb">Embed</text>
