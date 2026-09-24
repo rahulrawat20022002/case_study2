@@ -45,6 +45,9 @@ def main():
     ap.add_argument("--faithful-threshold", type=float, default=0.5,
                     help="cut for calling a row 'faithful' in the bucket matrix "
                          "(reporting choice; a sweep is always reported too)")
+    ap.add_argument("--workers", type=int, default=1,
+                    help="concurrent judge requests (vLLM batches them)")
+    ap.add_argument("--judge-max-tokens", type=int, default=1024)
     ap.add_argument("--configs", nargs="*", default=None,
                     help="restrict to these config names")
     args = ap.parse_args()
@@ -70,10 +73,11 @@ def main():
     # 2. faithfulness
     print("\n[2/3] faithfulness")
     judge = get_judge(args.judge, model=args.judge_model,
-                      base_url=args.judge_base_url)
+                      base_url=args.judge_base_url,
+                      max_tokens=args.judge_max_tokens)
     faith = faithfulness.run(judge, runs_dir=runs_dir, out_dir=args.out_dir,
                              test_set_path=test_set, configs=args.configs,
-                             progress=True)
+                             progress=True, workers=args.workers)
     for name, s in faith.items():
         if "skipped" in s:
             print(f"    {name:24s} (no retrieval, skipped by design)")

@@ -20,6 +20,7 @@ import json
 import time
 import argparse
 import yaml
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(__file__))
@@ -135,6 +136,14 @@ def main():
                     help="override openai_compatible.base_url")
     ap.add_argument("--api-key-env", default=None,
                     help="override openai_compatible.api_key_env")
+    ap.add_argument("--max-tokens", type=int, default=None,
+                    help="override generation.max_tokens")
+    ap.add_argument("--workers", type=int, default=1,
+                    help="parallel requests (a local vLLM server batches them); "
+                         "output order is preserved")
+    ap.add_argument("--resume", action="store_true",
+                    help="keep rows already in the output file and only run "
+                         "the missing ids (survives a crashed/wiped session)")
     args = ap.parse_args()
 
     cfg = yaml.safe_load(open(args.config_file))
@@ -143,6 +152,8 @@ def main():
         gen_cfg["provider"] = args.provider
     if args.model:
         gen_cfg["model"] = args.model
+    if args.max_tokens:
+        gen_cfg["max_tokens"] = args.max_tokens
     if args.base_url or args.api_key_env:
         oc = gen_cfg.setdefault("openai_compatible", {})
         if args.base_url:
@@ -167,38 +178,54 @@ def main():
     runs_dir = Path(cfg["paths"]["runs_dir"])
     runs_dir.mkdir(parents=True, exist_ok=True)
 
+    def run_one(conf, builder, row):
+        top5 = top10 = None
+        if conf["retrieval"]:
+            top5, top10 = retriever.search(row["system_description"])
+        passages = top5 or []
+        system, user = builder(row, passages)
+        try:
+            raw, usage = call_generator(client, kind, gen_cfg, system, user)
+        except Exception as e:           # log the failure, never kill the run
+            raw, usage = "", {"error": repr(e)[:300]}
+        parsed = parse_output(raw)
+        return {
+            "id": row["id"], "config": conf["name"],
+            "gold_label": row["label"],
+            "pred_label": parsed["label"],
+            "explanation": parsed["explanation"],
+            "parse_ok": parsed["parse_ok"],
+            "edge_case_type": row.get("edge_case_type"),
+            "annex_iii_area": row.get("annex_iii_area"),
+            "retrieved_top5": [{"id": h["id"], "text": h["text"],
+                                "score": h["score"]} for h in (top5 or [])],
+            "retrieved_top10_ids": [h["id"] for h in (top10 or [])],
+            "usage": usage,
+            "raw": raw,
+        }
+
     for conf in configs:
         name = conf["name"]
         builder = BUILDERS[name]
         out_path = runs_dir / f"{name}.jsonl"
-        print(f"\n=== {name}  ({len(rows)} rows) -> {out_path} ===")
-        with open(out_path, "w", encoding="utf-8") as f:
-            for i, row in enumerate(rows, 1):
-                top5 = top10 = None
-                if conf["retrieval"]:
-                    top5, top10 = retriever.search(row["system_description"])
-                passages = top5 or []
-                system, user = builder(row, passages)
-                raw, usage = call_generator(client, kind, gen_cfg, system, user)
-                parsed = parse_output(raw)
-                rec = {
-                    "id": row["id"], "config": name,
-                    "gold_label": row["label"],
-                    "pred_label": parsed["label"],
-                    "explanation": parsed["explanation"],
-                    "parse_ok": parsed["parse_ok"],
-                    "edge_case_type": row.get("edge_case_type"),
-                    "annex_iii_area": row.get("annex_iii_area"),
-                    "retrieved_top5": [{"id": h["id"], "text": h["text"],
-                                        "score": h["score"]} for h in (top5 or [])],
-                    "retrieved_top10_ids": [h["id"] for h in (top10 or [])],
-                    "usage": usage,
-                    "raw": raw,
-                }
+        done = set()
+        if args.resume and out_path.exists():
+            for l in open(out_path, encoding="utf-8"):
+                if l.strip():
+                    done.add(json.loads(l)["id"])
+        todo = [r for r in rows if r["id"] not in done]
+        mode = "a" if args.resume else "w"
+        print(f"\n=== {name}  ({len(todo)} to run, {len(done)} already done) "
+              f"-> {out_path} ===")
+        with open(out_path, mode, encoding="utf-8") as f, \
+                ThreadPoolExecutor(max_workers=max(1, args.workers)) as pool:
+            results = pool.map(lambda r: run_one(conf, builder, r), todo)
+            for i, rec in enumerate(results, 1):
                 f.write(json.dumps(rec, ensure_ascii=False) + "\n")
-                mark = "ok" if parsed["parse_ok"] else "PARSE?"
-                print(f"  [{i}/{len(rows)}] {row['id']}: pred={parsed['label']} "
-                      f"gold={row['label']} {mark}")
+                f.flush()
+                mark = "ok" if rec["parse_ok"] else "PARSE?"
+                print(f"  [{i}/{len(todo)}] {rec['id']}: pred={rec['pred_label']} "
+                      f"gold={rec['gold_label']} {mark}", flush=True)
     print("\ndone.")
 
 

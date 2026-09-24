@@ -35,6 +35,7 @@ import glob
 import argparse
 import yaml
 from statistics import mean
+from concurrent.futures import ThreadPoolExecutor
 
 from judges import get_judge
 
@@ -96,13 +97,28 @@ def score_row(judge, question, record):
     }
 
 
-def score_config(records, questions, judge, progress=False):
+def _safe_score(judge, question, record):
+    """A judge server error on one row is logged as a skip, never kills the run."""
+    try:
+        return score_row(judge, question, record)
+    except Exception as e:
+        return {"id": record.get("id"), "config": record.get("config"),
+                "faithfulness": None, "skipped_reason": "judge-error",
+                "error": repr(e)[:300], "n_statements": 0, "n_supported": 0,
+                "statements": [], "judge": judge.name}
+
+
+def score_config(records, questions, judge, progress=False, workers=1):
+    """workers>1 sends rows concurrently (a vLLM server batches them, 2-4x
+    faster). Greedy judge + order-preserving map, so results are identical."""
     rows = []
-    for i, rec in enumerate(records, 1):
-        q = questions.get(rec.get("id"), "")
-        rows.append(score_row(judge, q, rec))
-        if progress and i % 25 == 0:
-            print(f"    scored {i}/{len(records)}")
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
+        it = pool.map(lambda rec: _safe_score(judge, questions.get(rec.get("id"), ""),
+                                              rec), records)
+        for i, r in enumerate(it, 1):
+            rows.append(r)
+            if progress and i % 25 == 0:
+                print(f"    scored {i}/{len(records)}", flush=True)
     return rows
 
 
@@ -120,6 +136,10 @@ def _summarize(rows):
         "max": (max(vals) if vals else None),
         "n_perfect_1.0": sum(1 for v in vals if v == 1.0),
         "n_zero_0.0": sum(1 for v in vals if v == 0.0),
+        "n_judge_parse_failed": sum(
+            1 for r in scored
+            if any(st.get("reason") == "judge-parse-failed"
+                   for st in r["statements"])),
     }
 
 
@@ -132,7 +152,7 @@ def _count(xs):
 
 def run(judge, runs_dir="results/runs", out_dir="results/scoring",
         test_set_path="test_set.jsonl", skip_configs=("baseline1_plain_llm",),
-        configs=None, progress=False):
+        configs=None, progress=False, workers=1):
     """Score faithfulness for every retrieval config run file. Baseline1 skipped
     by design. Returns {config: summary}."""
     faith_dir = os.path.join(out_dir, "faithfulness")
@@ -150,7 +170,8 @@ def run(judge, runs_dir="results/runs", out_dir="results/scoring",
         records = _load_jsonl(p)
         if progress:
             print(f"  faithfulness: {name} ({len(records)} rows) judge={judge.name}")
-        rows = score_config(records, questions, judge, progress=progress)
+        rows = score_config(records, questions, judge, progress=progress,
+                            workers=workers)
         with open(os.path.join(faith_dir, f"{name}.jsonl"), "w",
                   encoding="utf-8") as f:
             for r in rows:
