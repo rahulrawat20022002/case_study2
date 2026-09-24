@@ -1,0 +1,267 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>Three Truth Objects</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;1,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --ground:#f4f3ee; --surface:#ffffff; --surface-2:#eceae2; --ink:#1b2230;
+    --muted:#5b6373; --border:#d7d5cb;
+    --teal:#2f7d8a; --teal-soft:#e3eff0;
+    --amber:#a86611; --amber-soft:#f3e9d8;
+    --violet:#6a54a3; --violet-soft:#ebe7f4;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#13161d; --surface:#1c212b; --surface-2:#242a35; --ink:#ecebe4;
+      --muted:#98a0ae; --border:#323947;
+      --teal:#5fb3c0; --teal-soft:#183037;
+      --amber:#e0a24a; --amber-soft:#33280f;
+      --violet:#a892e0; --violet-soft:#241e38;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#13161d; --surface:#1c212b; --surface-2:#242a35; --ink:#ecebe4;
+    --muted:#98a0ae; --border:#323947;
+    --teal:#5fb3c0; --teal-soft:#183037;
+    --amber:#e0a24a; --amber-soft:#33280f;
+    --violet:#a892e0; --violet-soft:#241e38;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--ground);color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.6;margin:0}
+  .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 80px}
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--teal);margin:0 0 14px}
+  h1{font-family:"Spectral",Georgia,serif;font-weight:600;font-size:clamp(30px,5vw,46px);
+    line-height:1.08;letter-spacing:-.01em;text-wrap:balance;margin:0 0 18px}
+  h2{font-family:"Spectral",Georgia,serif;font-weight:600;font-size:26px;
+    margin:56px 0 6px;letter-spacing:-.01em}
+  .lede{font-size:18px;color:var(--muted);max-width:64ch;margin:0 0 8px}
+  p{max-width:66ch}
+  .callout{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--teal);
+    border-radius:10px;padding:20px 22px;margin:28px 0 8px}
+  .callout strong{color:var(--ink)}
+  figure{margin:26px 0 0;background:var(--surface);border:1px solid var(--border);
+    border-radius:14px;padding:22px 20px 14px}
+  .scroll{overflow-x:auto}
+  svg{display:block;max-width:100%;height:auto;color:var(--ink);margin:0 auto}
+  figcaption{font-size:14px;color:var(--muted);margin-top:14px;max-width:74ch;padding:0 4px}
+  figcaption b{color:var(--ink);font-weight:600}
+  .legend{display:flex;flex-wrap:wrap;gap:18px 26px;margin:16px 4px 4px;font-size:13px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:8px}
+  .legend svg{margin:0}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:26px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;border-top:3px solid var(--c)}
+  .card.t{--c:var(--teal)} .card.a{--c:var(--amber)} .card.v{--c:var(--violet)}
+  .card .tag{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--c);margin:0 0 8px}
+  .card h3{font-family:"Spectral",serif;font-size:19px;margin:0 0 8px;font-weight:600}
+  .card p{font-size:14.5px;color:var(--muted);margin:0}
+  .card .db{font-family:"IBM Plex Mono",monospace;font-size:12.5px;margin-top:12px;
+    padding-top:12px;border-top:1px dashed var(--border);color:var(--ink)}
+  .yes{color:var(--teal);font-weight:600}
+  .no{color:var(--amber);font-weight:600}
+  /* svg semantic classes */
+  .s-teal{stroke:var(--teal)} .f-teal{fill:var(--teal)} .fb-teal{fill:var(--teal-soft)}
+  .s-amber{stroke:var(--amber)} .f-amber{fill:var(--amber)} .fb-amber{fill:var(--amber-soft)}
+  .s-violet{stroke:var(--violet)} .f-violet{fill:var(--violet)} .fb-violet{fill:var(--violet-soft)}
+  .box{fill:var(--surface);stroke:var(--border)}
+  .lbl{fill:var(--ink);font-family:"IBM Plex Sans",sans-serif;font-size:13px}
+  .lbl.sm{font-size:11.5px;fill:var(--muted)}
+  .lbl.mono{font-family:"IBM Plex Mono",monospace}
+  .lbl.b{font-weight:600}
+  .flow{stroke:var(--muted);stroke-width:1.6;fill:none}
+  .arrowlbl{fill:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:11px}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">Case Study 2 · pipeline mechanics</p>
+  <h1>Three truth objects, and which one is in the vector database</h1>
+  <p class="lede">The confusion is fair: the corpus, the correctness answer, and the retrieval answer all come from the same guidelines document. Only one of them is stored and retrieved.</p>
+
+  <div class="callout">
+    <p style="margin:0"><strong>The one-line answer.</strong> The vector database holds <em>only</em> the normative rule chunks. The <strong>ground-truth label</strong> (is this system high-risk?) is never embedded and never retrieved. It sits in a table next to each test input and is applied once, at the very end, as a plain lookup. Retrieval and correctness are two separate lanes that only meet when the scores are compared.</p>
+  </div>
+
+  <h2>Build time — where the three objects come from</h2>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 920 300" role="img" aria-label="The frozen guidelines PDF is split at extraction into three destinations: normative rule text becomes 361 chunks embedded in the Chroma vector database; worked-example descriptions become 215 test inputs; and the example verdicts become ground-truth labels plus a gold-passage pointer.">
+      <defs>
+        <marker id="a-mut" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker>
+      </defs>
+      <!-- source -->
+      <rect class="box" x="350" y="16" width="220" height="52" rx="8"/>
+      <text class="lbl b" x="460" y="38" text-anchor="middle">Commission Guidelines</text>
+      <text class="lbl sm" x="460" y="56" text-anchor="middle">frozen PDF · May 2026 · Annex III</text>
+      <!-- splitter -->
+      <line class="flow" x1="460" y1="68" x2="460" y2="96"/>
+      <line class="flow" x1="150" y1="96" x2="770" y2="96"/>
+      <text class="arrowlbl" x="463" y="90">split at extraction</text>
+      <line class="flow" x1="150" y1="96" x2="150" y2="128" marker-end="url(#a-mut)"/>
+      <line class="flow" x1="460" y1="96" x2="460" y2="128" marker-end="url(#a-mut)"/>
+      <line class="flow" x1="770" y1="96" x2="770" y2="128" marker-end="url(#a-mut)"/>
+      <!-- A: corpus -->
+      <rect class="box" x="24" y="130" width="252" height="150" rx="10" stroke-width="1.5"/>
+      <rect x="24" y="130" width="252" height="4" rx="2" class="f-teal"/>
+      <text class="lbl b mono" x="40" y="156" class="lbl b">Normative rule text</text>
+      <text class="lbl sm" x="40" y="176">numbered sections 2.x + 3.x</text>
+      <text class="lbl sm" x="40" y="194">the rules, not the answers</text>
+      <line class="flow s-teal" x1="150" y1="204" x2="150" y2="222" marker-end="url(#a-mut)"/>
+      <rect x="52" y="224" width="196" height="46" rx="8" class="fb-teal s-teal" stroke-width="1.5"/>
+      <text class="lbl b" x="150" y="244" text-anchor="middle">Chroma vector DB</text>
+      <text class="lbl sm mono" x="150" y="261" text-anchor="middle">361 embedded chunks</text>
+      <!-- B: test inputs -->
+      <rect class="box" x="334" y="130" width="252" height="150" rx="10" stroke-width="1.5"/>
+      <rect x="334" y="130" width="252" height="4" rx="2" fill="var(--muted)"/>
+      <text class="lbl b" x="350" y="156">Worked-example text</text>
+      <text class="lbl sm" x="350" y="176">the a / b / c blocks, held out</text>
+      <line class="flow" x1="460" y1="186" x2="460" y2="204" marker-end="url(#a-mut)"/>
+      <rect x="362" y="206" width="196" height="46" rx="8" class="box" stroke-width="1.5"/>
+      <text class="lbl b" x="460" y="226" text-anchor="middle">215 test inputs</text>
+      <text class="lbl sm mono" x="460" y="243" text-anchor="middle">system descriptions</text>
+      <!-- C: labels + gold -->
+      <rect class="box" x="644" y="130" width="252" height="150" rx="10" stroke-width="1.5"/>
+      <rect x="644" y="130" width="252" height="4" rx="2" class="f-amber"/>
+      <text class="lbl b" x="660" y="156">Example verdicts</text>
+      <text class="lbl sm" x="660" y="176">high-risk / not-high-risk</text>
+      <line class="flow s-amber" x1="712" y1="186" x2="712" y2="204" marker-end="url(#a-mut)"/>
+      <rect x="660" y="206" width="110" height="46" rx="8" class="fb-amber s-amber" stroke-width="1.5"/>
+      <text class="lbl b" x="715" y="228" text-anchor="middle">ground-truth</text>
+      <text class="lbl sm mono" x="715" y="244" text-anchor="middle">label</text>
+      <line class="flow s-violet" x1="850" y1="186" x2="850" y2="204" marker-end="url(#a-mut)"/>
+      <rect x="782" y="206" width="96" height="46" rx="8" class="fb-violet s-violet" stroke-width="1.5"/>
+      <text class="lbl b" x="830" y="225" text-anchor="middle">gold</text>
+      <text class="lbl sm mono" x="830" y="242" text-anchor="middle">section id</text>
+    </svg>
+    </div>
+    <figcaption>One source, split once. The <b>rules</b> go into the vector database. The <b>test inputs</b>, their <b>correct labels</b>, and the <b>gold section pointer</b> come out the other side and never enter the database. The label and the gold pointer are answer keys, kept aside for scoring.</figcaption>
+  </figure>
+
+  <h2>Run time — how one test input actually flows</h2>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 980 620" role="img" aria-label="At run time a test input is encoded and sent to the hybrid retriever, which is the only component that touches the Chroma vector database. It returns the top-5 rule passages to the generator, which produces an answer. Three scoring lanes run afterward: faithfulness compares the answer to the retrieved passages, correctness compares the predicted label to the ground-truth label by lookup bypassing the database, and retrieval quality compares the top-5 to the gold section with no LLM involved.">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker>
+        <marker id="ar-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--amber)"/></marker>
+        <marker id="ar-v" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--violet)"/></marker>
+        <marker id="ar-t" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker>
+      </defs>
+
+      <!-- SPINE -->
+      <rect class="box" x="190" y="20" width="250" height="50" rx="9"/>
+      <text class="lbl b" x="315" y="41" text-anchor="middle">Test input</text>
+      <text class="lbl sm" x="315" y="59" text-anchor="middle">one system description</text>
+
+      <line class="flow" x1="315" y1="70" x2="315" y2="104" marker-end="url(#ar)"/>
+      <text class="arrowlbl" x="325" y="91">encode query (bge)</text>
+
+      <rect class="box" x="190" y="106" width="250" height="54" rx="9"/>
+      <text class="lbl b" x="315" y="129" text-anchor="middle">Hybrid retriever</text>
+      <text class="lbl sm" x="315" y="147" text-anchor="middle">bge dense + BM25, fused</text>
+
+      <!-- DB link (only connection) -->
+      <line class="flow s-teal" x1="440" y1="133" x2="612" y2="133" marker-end="url(#ar-t)" marker-start="url(#ar-t)"/>
+      <text class="arrowlbl f-teal" x="526" y="125" text-anchor="middle">search</text>
+      <rect x="614" y="104" width="236" height="58" rx="9" class="fb-teal s-teal" stroke-width="1.6"/>
+      <text class="lbl b" x="732" y="127" text-anchor="middle">Chroma vector DB</text>
+      <text class="lbl sm mono" x="732" y="146" text-anchor="middle">361 rule chunks — rules only</text>
+
+      <line class="flow" x1="315" y1="160" x2="315" y2="200" marker-end="url(#ar)"/>
+      <text class="arrowlbl" x="325" y="184">take top-5</text>
+
+      <rect class="box" x="190" y="202" width="250" height="50" rx="9"/>
+      <text class="lbl b" x="315" y="223" text-anchor="middle">Top-5 rule passages</text>
+      <text class="lbl sm" x="315" y="241" text-anchor="middle">the generator's context</text>
+
+      <line class="flow" x1="315" y1="252" x2="315" y2="288" marker-end="url(#ar)"/>
+      <rect class="box" x="190" y="290" width="250" height="54" rx="9"/>
+      <text class="lbl b" x="315" y="313" text-anchor="middle">Generator</text>
+      <text class="lbl sm" x="315" y="331" text-anchor="middle">Claude Sonnet 4.6</text>
+
+      <line class="flow" x1="315" y1="344" x2="315" y2="380" marker-end="url(#ar)"/>
+      <rect class="box" x="176" y="382" width="278" height="60" rx="9"/>
+      <text class="lbl b" x="315" y="405" text-anchor="middle">Answer</text>
+      <text class="lbl sm" x="315" y="424" text-anchor="middle">predicted label + grounded explanation</text>
+
+      <!-- ground truth token, top right, bypasses everything -->
+      <rect x="614" y="20" width="236" height="60" rx="9" class="fb-amber s-amber" stroke-width="1.6"/>
+      <text class="lbl b" x="732" y="43" text-anchor="middle">Ground-truth label</text>
+      <text class="lbl sm mono" x="732" y="62" text-anchor="middle">held-out verdict · not in the DB</text>
+
+      <!-- gold token, mid right -->
+      <rect x="614" y="202" width="236" height="56" rx="9" class="fb-violet s-violet" stroke-width="1.6"/>
+      <text class="lbl b" x="732" y="224" text-anchor="middle">Gold section id</text>
+      <text class="lbl sm mono" x="732" y="243" text-anchor="middle">retrieval answer key</text>
+
+      <!-- SCORING NODES -->
+      <rect x="40" y="500" width="270" height="82" rx="10" class="box" stroke-width="1.6"/>
+      <rect x="40" y="500" width="270" height="4" rx="2" class="f-teal"/>
+      <text class="lbl b" x="175" y="527" text-anchor="middle">Faithfulness (judge)</text>
+      <text class="lbl sm" x="175" y="546" text-anchor="middle">RAGAS · a separate LLM</text>
+      <text class="lbl sm mono" x="175" y="566" text-anchor="middle">answer vs retrieved passages</text>
+
+      <rect x="355" y="500" width="270" height="82" rx="10" class="box" stroke-width="1.6"/>
+      <rect x="355" y="500" width="270" height="4" rx="2" class="f-amber"/>
+      <text class="lbl b" x="490" y="527" text-anchor="middle">Correctness</text>
+      <text class="lbl sm" x="490" y="546" text-anchor="middle">pure lookup · no model</text>
+      <text class="lbl sm mono" x="490" y="566" text-anchor="middle">predicted vs ground-truth</text>
+
+      <rect x="670" y="500" width="270" height="82" rx="10" class="box" stroke-width="1.6"/>
+      <rect x="670" y="500" width="270" height="4" rx="2" class="f-violet"/>
+      <text class="lbl b" x="805" y="527" text-anchor="middle">Retrieval quality</text>
+      <text class="lbl sm" x="805" y="546" text-anchor="middle">no LLM · no API · runs now</text>
+      <text class="lbl sm mono" x="805" y="566" text-anchor="middle">top-5 vs gold · Hit@5</text>
+
+      <!-- edges into scoring -->
+      <!-- answer -> faithfulness -->
+      <path class="flow s-teal" d="M250 442 C170 470 175 476 175 496" marker-end="url(#ar-t)"/>
+      <!-- top5 -> faithfulness -->
+      <path class="flow s-teal" d="M205 240 C70 300 60 420 120 496" marker-end="url(#ar-t)"/>
+      <!-- answer -> correctness -->
+      <path class="flow" d="M360 442 C430 468 460 476 470 496" marker-end="url(#ar)"/>
+      <!-- ground truth -> correctness (long dashed bypass) -->
+      <path class="flow s-amber" stroke-dasharray="6 5" d="M732 80 C732 300 560 300 520 496" marker-end="url(#ar-a)"/>
+      <text class="arrowlbl f-amber" x="600" y="330">lookup, skips the DB</text>
+      <!-- top5 -> retrieval quality -->
+      <path class="flow s-violet" d="M440 232 C560 300 690 380 760 496" marker-end="url(#ar-v)"/>
+      <!-- gold -> retrieval quality (dashed) -->
+      <path class="flow s-violet" stroke-dasharray="6 5" d="M812 258 C860 340 850 420 838 496" marker-end="url(#ar-v)"/>
+    </svg>
+    </div>
+    <div class="legend">
+      <span><svg width="34" height="10"><line x1="2" y1="5" x2="32" y2="5" stroke="var(--muted)" stroke-width="1.8"/></svg> flows through the run</span>
+      <span><svg width="34" height="10"><line x1="2" y1="5" x2="32" y2="5" stroke="var(--muted)" stroke-width="1.8" stroke-dasharray="6 5"/></svg> answer key, applied at scoring only</span>
+      <span><svg width="14" height="14"><rect x="1" y="1" width="12" height="12" rx="3" fill="var(--teal-soft)" stroke="var(--teal)"/></svg> retrieval / faithfulness</span>
+      <span><svg width="14" height="14"><rect x="1" y="1" width="12" height="12" rx="3" fill="var(--amber-soft)" stroke="var(--amber)"/></svg> correctness</span>
+      <span><svg width="14" height="14"><rect x="1" y="1" width="12" height="12" rx="3" fill="var(--violet-soft)" stroke="var(--violet)"/></svg> retrieval quality</span>
+    </div>
+    <figcaption>Read the spine top to bottom: only the <b>retriever</b> ever touches the vector database. The generator sees passages, never the database. Then three scores run off to the side. <b>Correctness</b> pulls the ground-truth label straight down the dashed line, bypassing the whole pipeline. <b>Retrieval quality</b> (what we are building now) needs the retriever and the gold pointer only, so it runs with <b>no generator and no API key</b>.</figcaption>
+  </figure>
+
+  <h2>The three objects, side by side</h2>
+  <div class="cards">
+    <div class="card t">
+      <p class="tag">retrieved</p>
+      <h3>Corpus chunks</h3>
+      <p>The 361 normative rule paragraphs. The only thing embedded and searched. This is what the retriever fetches and the generator reads.</p>
+      <p class="db">In the vector DB? <span class="yes">Yes</span></p>
+    </div>
+    <div class="card a">
+      <p class="tag">looked up</p>
+      <h3>Ground-truth label</h3>
+      <p>The correct high-risk / not verdict for each test input, taken from the held-out worked example. Used once, to score correctness.</p>
+      <p class="db">In the vector DB? <span class="no">No</span></p>
+    </div>
+    <div class="card v">
+      <p class="tag">answer key</p>
+      <h3>Gold passage</h3>
+      <p>The section that governs each input. Not a stored passage, just a pointer used to grade whether the retriever fetched the right rules.</p>
+      <p class="db">In the vector DB? <span class="no">No</span></p>
+    </div>
+  </div>
+
+  <p style="margin-top:34px;color:var(--muted)">So nothing "holds" the vector database except the rules. The label and the gold key are kept off to the side and only brought in when it is time to check the answer. That separation is the whole reason the study can claim a metric missed a legal error: the correctness answer never went near the retrieval the metric was scoring.</p>
+</div>
+
+</body></html>
