@@ -75,8 +75,13 @@ def gold_ids_for(sec, by_sec):
     return related, ("related" if related else "missing")
 
 
+OUT_MD = "results/retrieval_eval.md"
+
+
 def main(cfg_path="config/pipeline.yaml"):
+    global OUT_MD
     cfg = yaml.safe_load(open(cfg_path))
+    OUT_MD = cfg["paths"].get("retrieval_eval_out", "results/retrieval_eval") + ".md"
     rows = [json.loads(l) for l in open(cfg["paths"]["test_set"], encoding="utf-8")]
     chunks = [json.loads(l) for l in
               open(cfg["corpus"]["chunks_file"], encoding="utf-8")]
@@ -154,7 +159,7 @@ def main(cfg_path="config/pipeline.yaml"):
     }
 
     os.makedirs("results", exist_ok=True)
-    with open("results/retrieval_eval.json", "w", encoding="utf-8") as f:
+    with open(cfg["paths"].get("retrieval_eval_out", "results/retrieval_eval") + ".json", "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2)
     _write_md(result)
 
@@ -165,7 +170,7 @@ def main(cfg_path="config/pipeline.yaml"):
     print(f"  Hit@10  {overall['hit@10']:.3f}")
     print(f"  Recall@5  {overall['recall@5']:.3f}   Recall@10 {overall['recall@10']:.3f}")
     print(f"  MRR     {overall['mrr']:.3f}")
-    print("  wrote results/retrieval_eval.json and results/retrieval_eval.md")
+    print(f"  wrote {OUT_MD[:-3]}.json and {OUT_MD}")
 
 
 def _write_md(result):
@@ -202,7 +207,7 @@ def _write_md(result):
     table("By Annex III area", result["by_area"])
     table("By edge-case type (filter rows are the Article 6(3) cases)",
           result["by_edge_case"])
-    with open("results/retrieval_eval.md", "w", encoding="utf-8") as f:
+    with open(OUT_MD, "w", encoding="utf-8") as f:
         f.write("\n".join(L))
 
 

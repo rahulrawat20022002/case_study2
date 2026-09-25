@@ -1,0 +1,306 @@
+{
+ "anx3-008": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-010": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-011": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-013": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-016": {
+  "check": "fix",
+  "reviewer_text": "AI systems with the sole purpose of anonymising personal data, such as biometric systems which are intended to be used solely for the purpose of enabling cybersecurity and personal data protection measures as indicated in Recital 54 AI Act."
+ },
+ "anx3-023": {
+  "check": "fix",
+  "reviewer_text": "AI system to categorise customers based on their gender to offer/improve personalised experience for customers. The AI system captures keystrokes, analyses them to assign a gender to the customer to offer/improve personalized experience (e.g., personalised advertising).The AI system deploys biometric categorisation (assigns a customer to a certain category based on their biometric data)."
+ },
+ "anx3-025": {
+  "check": "fix",
+  "reviewer_text": "AI system intended to be used as a content moderation tool. The AI system scans text/pictures to identify illegal or inappropriate content. Although the system categorises content based on specific indications (e.g., extreme content that may reveal political opinions and be considered as a sensitive or protected attribute or characteristic), that categorisation is not made on the basis of biometric data."
+ },
+ "anx3-027": {
+  "check": "fix",
+  "reviewer_text": "An AI system for the gaming industry that is intended to measure a gaming experience to further improve the product (real-life gaming experience). The AI system tracks body posture, facial expressions, eye closures and gazes to measure the reaction of the player, including their excitement, anger, frustration, amusement; analyses the above-mentioned recorded data to identify relevant elements of the gaming experience that needs improvement.Such a system involves processing of biometric data (e.g., facial expressions which are a source of biometric data). It also identifies or infers gamers’ emotions based on their biometric data. Excitement, anger, frustrations are examples of emotions."
+ },
+ "anx3-028": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-029": {
+  "check": "fix",
+  "reviewer_text": "An AI system used in call centres to infer emotions of customers. The AI system analyses customers' voices and evaluates vocal tone, pitch and volume to gauge customer satisfaction level for statistical reasons, to identify the moment to route them to a human agent (e.g., anger), for troubleshooting purposes, or to enhance customer care business unit. These AI systems deduce from the customer's voice their emotions, e.g., if they are happy or angry.It does not matter whether the biometric system is intended to identify the customer."
+ },
+ "anx3-030": {
+  "check": "fix",
+  "reviewer_text": "Smart watch mood monitor/wearable device. The AI system is integrated into a smart watch to measure biometric data (e.g., voice, heart rate) and monitor user emotions (e.g., sad, curious, happy, bored) to assist users in recognising their emotional state and provide emotional improvement suggestions. Such AI systems infer user emotions, which is intrusive. It is not relevant whether the emotion recognition results are disclosed solely to the specific user."
+ },
+ "anx3-031": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-032": {
+  "check": "fix",
+  "reviewer_text": "The observation of readily apparent expressions. The mere observation that a person is smiling is not emotional recognition. A TV broadcaster using a device that allows to track how many times its news presenters smile at the camera is not emotion recognition."
+ },
+ "anx3-033": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-036": {
+  "check": "fix",
+  "reviewer_text": "An AI system intended to be used to monitor road traffic and to adjust traffic lights accordingly. Such a system controls or limits possible physical harm to people or physical damage to vehicles, road users and surroundings by directly protecting the physical integrity of road traffic management system. It should therefore be considered to have a direct impact on road traffic safety."
+ },
+ "anx3-037": {
+  "check": "fix",
+  "reviewer_text": "An AI system intended to be used in the recognition of heavy objects on vulnerable bridges and quaysides. Such a system helps prevent the collapse of bridges and quay walls. It prevents physical harm to natural persons and physical damage to objects under a bridge or a quayside by directly protecting the physical integrity of road infrastructure dependent on the road traffic management system. The failure of the AI system could result in potential collapse not being detected on time and natural persons on the bridges and quay walls being at risk when they collapse. The AI system is not needed for managing bridges and quays and is an additional safety component, comparable to an emergency button."
+ },
+ "anx3-038": {
+  "check": "fix",
+  "reviewer_text": "An AI system intended to be used to link real-time water level data to lock management for road traffic (e.g. in flood-risk scenarios). Such a system monitors and detects situations that may directly lead to physical harm to natural persons or physical damage to property by directly protecting the physical integrity of the road infrastructure dependent on the road traffic management system."
+ },
+ "anx3-040": {
+  "check": "fix",
+  "reviewer_text": "An AI-enabled traffic flow optimisation system based on real-time data collection. Such a system is a traffic data analytics platform enabling intelligent analysis for flow optimisation functions, but does not directly trigger changes in the traffic management that may impact the safety; it does not directly protect safety or physical integrity. These systems provide insights but do not directly protect physical integrity. Traffic systems can function without it."
+ },
+ "anx3-051": {
+  "check": "fix",
+  "reviewer_text": "Automated admissions systems intended to be used to review and evaluate student applications, transcripts, and test scores to determine eligibility for admission to an educational institution. This includes systems that evaluate applications from prospective students and determine their eligibility for admission, since the system’s output will directly affect the applicant’s right to study, train, or enrol at the institution. That will be the case, for instance, where the system's evaluation and recommendation have the potential to influence the decision-making process, in that it determines the outcome of an admissions decision. In cases where the system does not perform profiling."
+ },
+ "anx3-053": {
+  "check": "fix",
+  "reviewer_text": "Vocational training assignment AI tools intended to be used by a regional employment agency to process applicants’ prior education records, completed certifications, and standardized aptitude test results to match individuals to available apprenticeship programs should be classified as high-risk. Such systems apply predefined eligibility criteria, such as minimum qualifications required for each program and capacity limits, to assign candidates to appropriate training slots."
+ },
+ "anx3-057": {
+  "check": "fix",
+  "reviewer_text": "AI systems supporting the processing of applications to be used by an education institution for file handling, such as indexing, searching, text and speech processing, as well as for the translation of documents provided along with applications, and for extracting, transforming, and organising the data collected into a meaningful and usable format. Although such systems support the assessment process, they do not have a relevant impact on the decision-making process, since they are only intended to facilitate the organisation and review of applicant files."
+ },
+ "anx3-058": {
+  "check": "fix",
+  "reviewer_text": "AI-enabled admissions decision review tools intended to be used by an educational institution to review and analyse ex post admissions decisions made by an admissions committee. Such systems are not intended to be used to replace or influence human assessment, but to provide a quality control check to ensure that the admissions process is functioning as intended and to support and improve future decision-making processes, rather than to make decisions. Since such systems are intended to detect decision-making patterns and deviations, and are not meant to replace or influence the previously completed human assessment."
+ },
+ "anx3-060": {
+  "check": "fix",
+  "reviewer_text": "AI-enabled grading and feedback systems intended to be used to evaluate students’ assignments, such as tests, quizzes, and exams which count towards a final evaluation. Such AI systems have an impact on the summative evaluation of students by analysing the results of assignments and proposing grades."
+ },
+ "anx3-061": {
+  "check": "fix",
+  "reviewer_text": "AI-enabled personalised learning assistant intended to be used to provide recommendations and feedback to students on their progress by generating reports at the end of each unit, which include grades, areas of strength and weakness, and recommendations for improvement. Although such AI systems support formative evaluation by providing ongoing feedback and guidance to students to help them improve their understanding of course material, their output is also used by the teacher to inform decisions about student’s grades at the end of the academic period and therefore have an impact on summative evaluation."
+ },
+ "anx3-072": {
+  "check": "fix",
+  "reviewer_text": "AI-enabled pre-assessment tool intended to be used to help educators prepare for the assessment of a student’s readiness for a particular level of education or training, based on data about the student’s prior education and work experience, and generating a set of questions and topics that the educator can use to assess the student’s readiness should not be considered high- risk. Since the system’s output is used by educators to inform their assessment methodology, but does not itself make any decisions about the appropriate level of education that an individual will receive or will be able to access."
+ },
+ "anx3-074": {
+  "check": "fix",
+  "reviewer_text": "AI-enabled proctoring system for exam certification intended to be used by an educational or vocational training institution to monitor test-takers for prohibited behaviour during a certification exam, such as accessing unauthorized materials or communicating with someone else during the exam, by using a combination of facial recognition, keystroke analysis, and screen monitoring. by an educational institution to analyse student behaviour and detect patterns that may indicate cheating during online exams."
+ },
+ "anx3-075": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-076": {
+  "check": "fix",
+  "reviewer_text": "AI system intended to be used by an educational institution to check homework or assignments for plagiarism against a database of existing content. Such a system is not intended to be used to monitor and detect prohibited behaviour during tests, but to analyse submitted work which has been produced in a non-supervised environment and does not involve live monitoring or real-time behavioural analysis during the testing process."
+ },
+ "anx3-077": {
+  "check": "fix",
+  "reviewer_text": "AI system for non-academic student behaviour monitoring intended to be used by an educational institution to monitor and detect student behaviour in the cafeteria, hallways, and other non-testing environments and to alert staff to potential incidents of bullying, harassment, or other undesirable behaviour. Such a system is not used to monitor and detect prohibited behaviour during tests, but for non-academic purposes, such as maintaining a safe and orderly school environment, and it does not involve the evaluation or assessment of student academic performance."
+ },
+ "anx3-079": {
+  "check": "fix",
+  "reviewer_text": "Identity verification: An AI system intended to be used during a test to automatically processes students’ identity verification documents, such as IDs or biometric data like facial recognition scans, to confirm that the person taking the test matches the registered candidate. Since the system helps streamline identity verification, but it does not directly decide if the student can proceed with the exam or if any sanctions should be applied in the case of misrepresentation, as these decisions are made by the human proctor."
+ },
+ "anx3-080": {
+  "check": "fix",
+  "reviewer_text": "AI systems intended to be used as an automated job matching and ranking tool designed to assist internal and external recruiters in the recruitment and selection processes by analyzing and filtering candidates should be classified as high-risk. Such a system processes structured and unstructured data (e.g., CVs, skills, education, past placements, cognitive, social and emotional competencies) and compares it to job descriptions or historical hiring data to generate quantitative scores, rankings (e.g., ‘top 5 candidates’), and/or qualitative fit categories (e.g., ‘high fit,’ ‘low fit’). These outputs are used to shortlist candidates for internal and external recruiters, who retain discretion to review, override, or supplement algorithmic recommendations. However, the system’s rankings and scores serve as a primary input for decision-making. For example, it could lead to low ranking or exclusion of candidates of a certain gender or of candidates with disabilities."
+ },
+ "anx3-084": {
+  "check": "fix",
+  "reviewer_text": "AI system intended to be used for scoring applicant answers in a recruitment process An AI system is intended to be used to evaluate written or oral responses46 given by job applicants during an online assessment. The system assigns each applicant a numerical score based on linguistic and substantive criteria, then generates a ranking used to determine who is invited to the interview stage. The AI performs core evaluative functions and meaningfully impacts the substance of the recruitment and selection."
+ },
+ "anx3-085": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-086": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-088": {
+  "check": "fix",
+  "reviewer_text": "AI system intended to be used to perform background checks on job applicants during recruitment The system aggregates and analyses multiple types of data. Standard inputs include official records, such as education and professional certifications, employment history, social network history, and credit or financial data, where legally permissible. The system also incorporates open-source and online information. Employers or recruiters receive outputs in the form of composite risk scores, categories such as ‘low,” ‘medium,” or ‘high risk,” or specific alerts highlighting potential issues (e.g., unexplained employment gaps, flagged financial liabilities, or controversial online activity). These outputs can be used as filters in high-volume hiring, where candidates flagged as ‘high risk” may be deprioritized or excluded before a caseworker reviews their file. While human review is formally part of the process, in practice the system’s output heavily influences which candidates advance in the recruitment process, hence materially influencing the outcome of the recruitment process."
+ },
+ "anx3-091": {
+  "check": "fix",
+  "reviewer_text": "AI system intended to be used for employer reputation monitoring A company uses an AI system to scan online platforms and social media for comments or reviews mentioning the employer, with the purpose of tracking the organisation’s reputation as a workplace and identifying general trends in how the company is perceived by potential applicants. No analysis or tracking of specific comments or specific users (which are anonymized at collection) are undertaken.Although the AI system is linked to recruitment more broadly, since employer reputation may affect how attractive the company appears to jobseekers, it is not intended to be used for the direct recruitment or selection of natural persons."
+ },
+ "anx3-093": {
+  "check": "fix",
+  "reviewer_text": "AI system intended to be used for assisting candidates in tailoring their CV to specific open positions The AI system analyses the candidate’s CV along with the description of the open position provided by the candidate. Based on these elements, the AI tool recommends changes to the CV of the candidate with the aim of increasing the likelihood of selection for an interview. These recommendations are exclusively shared with the candidate. While the AI system may indirectly impact the success of the candidate in obtaining the desired position, its use is initiated and managed by the candidate, outside of the potential employer’s control and occurs outside of the recruitment and selection process."
+ },
+ "anx3-094": {
+  "check": "fix",
+  "reviewer_text": "AI system intended to be used for assisting candidates in finding the best available position The system is used by candidates to analyse both job vacancies and information provided by the candidate covering their skills, experience, and professional expectations. Based on these elements, the system ranks job vacancies and recommends the most suitable positions for the candidate. These recommendations are exclusively shared with the candidate. While the AI system may indirectly impact the success of the candidate in obtaining the desired position, its use is initiated and managed by the candidate, outside of the potential employer’s control and occurs outside of the recruitment and selection process."
+ },
+ "anx3-096": {
+  "check": "fix",
+  "reviewer_text": "AI system intended to be used for recognising and organising information in CVs received for an open position and to organise it within an internal database that can be searched by recruiters. Such a system will be used for a clearly defined and limited function and does not have a material impact on the recruitment or selection of the applicant."
+ },
+ "anx3-101": {
+  "check": "fix",
+  "reviewer_text": "An online tutoring platform deploys an AI system to manage self-employed teacher accounts Inputs include student satisfaction ratings, lesson completion rates, and punctuality logs from the videoconferencing system. The system aggregates these into a ‘tutor performance score.” If the score falls below 4/5 for three consecutive weeks, the system automatically suspends the tutor’s account for a month. If low ratings persist for another review period, the account is permanently deactivated. The practical effect is that tutors can no longer accept lessons, which ends their work relationship with the platform. The system’s effect is the functional termination of the work relationship."
+ },
+ "anx3-112": {
+  "check": "fix",
+  "reviewer_text": "An AI system intended to decide on the grant of unemployment benefits in individual cases. The system analyses whether the person qualifies for the benefit, during which period and in which amount, and makes a recommendation to a case handler about the eligibility and the receiving of the benefits. Such an AI system is high-risk, because it is intended to evaluate a natural person’s eligibility, and makes a recommendation on the granting or denial of these benefits."
+ },
+ "anx3-114": {
+  "check": "fix",
+  "reviewer_text": "An AI system intended to be used by public administrations to evaluate a natural person’s eligibility for social housing or unemployment benefits through a scoring system that is not a prohibited practice. The system draws on demographic, behavioural, and financial data to predict the likelihood of fraud or long-term dependency. Such an AI system is high-risk, since it aids in the evaluation of a natural person’s eligibility and materially influences decision about whether the applicant will receive the benefits and services."
+ },
+ "anx3-128": {
+  "check": "fix",
+  "reviewer_text": "An AI system intended to create a numerical representation of a natural person's creditworthiness, based on their payment behaviour and income, that is intended to support the decision-making on a consumer credit or a mortgage, which qualify as essential private services."
+ },
+ "anx3-131": {
+  "check": "fix",
+  "reviewer_text": "An AI system intended to perform advanced segmentation to gain a deeper understanding of customer groups and how they use certain services based on demographic and behavioural data. The same may be true for pricing simulations, that are used to test how changes in pricing might affect customer behaviour, competitiveness or profitability, if they are distinct from the AI system carrying out a creditworthiness assessment. Even though their outputs may be used further downstream, they represent an earlier step in the value chain."
+ },
+ "anx3-132": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-134": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-136": {
+  "check": "fix",
+  "reviewer_text": "An AI system may be intended to be used by financial intermediaries to evaluate the extension of margin credit (whereby clients borrow capital against their existing securities) to existing or prospect clients. Despite being capable of determining access to financial resources to natural persons."
+ },
+ "anx3-137": {
+  "check": "fix",
+  "reviewer_text": "An AI system intended to be used by an insurer that reviews applications for life insurance, so long as it qualifies as a risk assessment as defined above. This is usually the case if the AI system processes data provided by the applicant, such as age, health status, family history, lifestyle habits and occupation and relies on mortality tables, that estimate the probability of death for each applicant within a given period. This processing guides whether the insurer accepts the application and what conditions apply."
+ },
+ "anx3-139": {
+  "check": "fix",
+  "reviewer_text": "AI systems intended to be used for claims management in case of health insurance products in case the insured event happens. This is because these systems are intended to to verify whether a claim is valid under the policy terms or to determine the amount to be paid. These use cases are distinct from carrying out a risk assessment or pricing, even though their outcome might affect the enjoyment of the health insurance."
+ },
+ "anx3-140": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-145": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-146": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-148": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-156": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-157": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-158": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-159": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-160": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-174": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-176": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-184": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-185": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-187": {
+  "check": "fix",
+  "reviewer_text": "An AI system intended to provide applicants with answers to frequently asked questions, to guide users to the correct forms, to schedule appointments, or to deliver application status notifications. Such an AI system does not assist the authority in examining eligibility or associated complaints, but its intended purpose is service delivery to migrant applicants."
+ },
+ "anx3-189": {
+  "check": "fix",
+  "reviewer_text": "An AI system intended to highlight verbatim differences between current and previous statements (for example, string-level contrasts), without generating any credibility assessment or recommending follow-up questions; where the system evaluates the significance of the differences or labels them as credibility concerns, the exception no longer applies."
+ },
+ "anx3-198": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-199": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-202": {
+  "check": "fix",
+  "reviewer_text": "An AI speech-to-text system used by a court to transcribe audio recordings of court proceedings and hearings, which then become part of the file. The system has the following functionalities: (i) it can take various audio file formats (or live audio) and produce textual transcripts, including automated speaker separation (distinguishing different voices) and insertion of punctuation;(ii) it can correct terminology – for example, recognising legal terms or names and adjusting the vocabulary accordingly. While the transcription of court hearings that become part of the file could be considered to assist a judicial authority to access testimonies of witnesses and parties to a proceeding, such a tool does not assist in researching and interpreting facts and the law100. The fact that recordings or transcripts generated by an AI system may later form part of the evidentiary record in judicial proceedings, and that inaccuracies may affect fundamental rights, does not in itself mean that the system is intended to assist a judicial authority in researching and interpreting facts and the law. In this case, the system’s intended purpose is limited to technical recording or transcription without analytical or evaluative functionalities. The same would remain true if such an AI system is later used as technical assistance in information retrieval to help interrogate the court transcript (e.g., requesting to search ‘when was topic X discussed” in order to find the location in the original audio file). That conclusion could be different where voice-to-text transcripts are further processed by an AI system to summarise or select the key arguments or produce further evaluations of relevance for the judicial decision- making, including when resulting in recommendations to judges."
+ },
+ "anx3-203": {
+  "check": "fix",
+  "reviewer_text": "AI-enabled chatbots offered on the websites of courts to assist visitors to the website in finding relevant information. Such systems function as virtual assistants, and are designed to provide information to individuals about procedural steps, required documents, deadlines, and available remedies. They do not assist judicial authorities in researching and interpreting facts and the law or in applying the law to a concrete set of facts."
+ },
+ "anx3-204": {
+  "check": "fix",
+  "reviewer_text": "An AI system designed to assist judicial authorities in drafting press releases or legal summaries on public interest cases. The system translates the technical language of a judgement into accessible summaries. Such a system performs ancillary administrative activities that do not affect the actual administration of justice in individual cases."
+ },
+ "anx3-206": {
+  "check": "fix",
+  "reviewer_text": "AI systems intended for purely ancillary administrative activities that do not affect the adjudication of individual cases, such as the anonymisation or pseudonymisation of judicial decisions, documents, or data; internal communication between personnel; searching for delivery addresses and dispatching documents; verifying the payment of court fees; processing electronic signatures; verifying powers of attorney; and other similar administrative tasks."
+ },
+ "anx3-208": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-209": {
+  "check": "fix",
+  "reviewer_text": "An AI system intended for proofreading or improving the style of judicial decisions or judgments drafted by judges, without changing the content. It is doubtful whether such an AI system would be considered as an AI system intended to assist in applying the law to a concrete set of facts, because the degree of assistance appears negligible. In any event, the system would benefit from the exception for AI systems intended to improve the result of a previously completed human activity."
+ },
+ "anx3-214": {
+  "check": "fix",
+  "reviewer_text": "AI systems monitoring the activity of elected officials in submitting legislative proposals or amendments based on content provided by a parliament’s web presence. This monitoring activity mainly serves informational purposes; it does not have as its direct purpose to influence the outcome of elections."
+ },
+ "anx3-215": {
+  "check": "ok",
+  "reviewer_text": null
+ },
+ "anx3-216": {
+  "check": "fix",
+  "reviewer_text": "AI systems used by academic institutions for modelling electoral behaviour for research purposes. Such systems are not intended to influence the outcome of elections."
+ },
+ "anx3-217": {
+  "check": "ok",
+  "reviewer_text": null
+ }
+}

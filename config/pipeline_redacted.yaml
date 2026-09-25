@@ -68,5 +68,6 @@ configurations:
     retrieval: true           # same passages, prompt walks 6(2)/Annex III/6(3)
 
 paths:
-  test_set: "test_set.jsonl"
-  runs_dir: "results/runs"
+  test_set: "test_set_redacted.jsonl"   # verdict text removed (label-leak fix, 24 Sep 2026)
+  runs_dir: "results/runs_redacted"
+  retrieval_eval_out: "results/retrieval_eval_redacted"
