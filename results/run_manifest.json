@@ -1,0 +1,27 @@
+{
+  "created_utc": "2026-09-24T15:09:56",
+  "generator": {
+    "model": "microsoft/phi-4",
+    "revision": "2db69c1c3e91a05d2c64a3185acfbaf36f744e25",
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "max_tokens": 2048,
+    "server": "vLLM",
+    "max_model_len": 8192
+  },
+  "judge": {
+    "model": "Qwen/Qwen2.5-72B-Instruct-AWQ",
+    "revision": "698703eae6604af048a3d2f509995dc302088217",
+    "temperature": 0.0,
+    "max_tokens": 2048,
+    "server": "vLLM",
+    "max_model_len": 6144
+  },
+  "configs": [
+    "baseline1_plain_llm",
+    "baseline2_standard_rag",
+    "agent_structured"
+  ],
+  "faithful_threshold": 0.5,
+  "limit": null
+}
