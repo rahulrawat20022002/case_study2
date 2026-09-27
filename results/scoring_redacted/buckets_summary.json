@@ -1,0 +1,112 @@
+{
+  "agent_structured": {
+    "config": "agent_structured",
+    "faithful_threshold": 0.5,
+    "n_joined_scored": 215,
+    "n_unscored": 0,
+    "matrix": {
+      "right_faithful": 91,
+      "right_unfaithful": 93,
+      "wrong_faithful": 17,
+      "wrong_unfaithful": 14
+    },
+    "matrix_by_threshold": {
+      "0.3": {
+        "right_faithful": 112,
+        "right_unfaithful": 72,
+        "wrong_faithful": 22,
+        "wrong_unfaithful": 9
+      },
+      "0.5": {
+        "right_faithful": 91,
+        "right_unfaithful": 93,
+        "wrong_faithful": 17,
+        "wrong_unfaithful": 14
+      },
+      "0.7": {
+        "right_faithful": 51,
+        "right_unfaithful": 133,
+        "wrong_faithful": 7,
+        "wrong_unfaithful": 24
+      },
+      "0.9": {
+        "right_faithful": 7,
+        "right_unfaithful": 177,
+        "wrong_faithful": 1,
+        "wrong_unfaithful": 30
+      },
+      "1.0": {
+        "right_faithful": 6,
+        "right_unfaithful": 178,
+        "wrong_faithful": 1,
+        "wrong_unfaithful": 30
+      }
+    },
+    "off_diagonal": {
+      "wrong_faithful_count": 17,
+      "right_unfaithful_count": 93
+    },
+    "continuous": {
+      "mean_faithfulness_when_right": 0.45022448867557563,
+      "mean_faithfulness_when_wrong": 0.48663012614625517,
+      "point_biserial_correct_vs_faithfulness": -0.04343942937601381,
+      "n_right": 184,
+      "n_wrong": 31
+    }
+  },
+  "baseline2_standard_rag": {
+    "config": "baseline2_standard_rag",
+    "faithful_threshold": 0.5,
+    "n_joined_scored": 215,
+    "n_unscored": 0,
+    "matrix": {
+      "right_faithful": 110,
+      "right_unfaithful": 79,
+      "wrong_faithful": 14,
+      "wrong_unfaithful": 12
+    },
+    "matrix_by_threshold": {
+      "0.3": {
+        "right_faithful": 155,
+        "right_unfaithful": 34,
+        "wrong_faithful": 21,
+        "wrong_unfaithful": 5
+      },
+      "0.5": {
+        "right_faithful": 110,
+        "right_unfaithful": 79,
+        "wrong_faithful": 14,
+        "wrong_unfaithful": 12
+      },
+      "0.7": {
+        "right_faithful": 58,
+        "right_unfaithful": 131,
+        "wrong_faithful": 1,
+        "wrong_unfaithful": 25
+      },
+      "0.9": {
+        "right_faithful": 25,
+        "right_unfaithful": 164,
+        "wrong_faithful": 0,
+        "wrong_unfaithful": 26
+      },
+      "1.0": {
+        "right_faithful": 25,
+        "right_unfaithful": 164,
+        "wrong_faithful": 0,
+        "wrong_unfaithful": 26
+      }
+    },
+    "off_diagonal": {
+      "wrong_faithful_count": 14,
+      "right_unfaithful_count": 79
+    },
+    "continuous": {
+      "mean_faithfulness_when_right": 0.5612419473530584,
+      "mean_faithfulness_when_wrong": 0.45105311355311356,
+      "point_biserial_correct_vs_faithfulness": 0.1421341680562028,
+      "n_right": 189,
+      "n_wrong": 26
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "config": "baseline2_standard_rag",
+  "faithful_threshold": 0.5,
+  "n_joined_scored": 215,
+  "n_unscored": 0,
+  "matrix": {
+    "right_faithful": 110,
+    "right_unfaithful": 79,
+    "wrong_faithful": 14,
+    "wrong_unfaithful": 12
+  },
+  "matrix_by_threshold": {
+    "0.3": {
+      "right_faithful": 155,
+      "right_unfaithful": 34,
+      "wrong_faithful": 21,
+      "wrong_unfaithful": 5
+    },
+    "0.5": {
+      "right_faithful": 110,
+      "right_unfaithful": 79,
+      "wrong_faithful": 14,
+      "wrong_unfaithful": 12
+    },
+    "0.7": {
+      "right_faithful": 58,
+      "right_unfaithful": 131,
+      "wrong_faithful": 1,
+      "wrong_unfaithful": 25
+    },
+    "0.9": {
+      "right_faithful": 25,
+      "right_unfaithful": 164,
+      "wrong_faithful": 0,
+      "wrong_unfaithful": 26
+    },
+    "1.0": {
+      "right_faithful": 25,
+      "right_unfaithful": 164,
+      "wrong_faithful": 0,
+      "wrong_unfaithful": 26
+    }
+  },
+  "off_diagonal": {
+    "wrong_faithful_count": 14,
+    "right_unfaithful_count": 79
+  },
+  "continuous": {
+    "mean_faithfulness_when_right": 0.5612419473530584,
+    "mean_faithfulness_when_wrong": 0.45105311355311356,
+    "point_biserial_correct_vs_faithfulness": 0.1421341680562028,
+    "n_right": 189,
+    "n_wrong": 26
+  }
+}

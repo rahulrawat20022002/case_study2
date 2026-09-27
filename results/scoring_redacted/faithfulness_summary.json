@@ -1,0 +1,32 @@
+{
+  "judge": "openai-compatible:Qwen/Qwen2.5-72B-Instruct-AWQ",
+  "by_config": {
+    "agent_structured": {
+      "n": 215,
+      "n_scored": 215,
+      "n_skipped": 0,
+      "skipped_reasons": {},
+      "mean_faithfulness": 0.4554736736132085,
+      "min": 0.0,
+      "max": 1.0,
+      "n_perfect_1.0": 7,
+      "n_zero_0.0": 21,
+      "n_judge_parse_failed": 0
+    },
+    "baseline1_plain_llm": {
+      "skipped": "no retrieval, faithfulness N/A by design"
+    },
+    "baseline2_standard_rag": {
+      "n": 215,
+      "n_scored": 215,
+      "n_skipped": 0,
+      "skipped_reasons": {},
+      "mean_faithfulness": 0.5479167860563209,
+      "min": 0.1111111111111111,
+      "max": 1.0,
+      "n_perfect_1.0": 25,
+      "n_zero_0.0": 0,
+      "n_judge_parse_failed": 0
+    }
+  }
+}

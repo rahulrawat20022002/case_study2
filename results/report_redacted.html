@@ -1,0 +1,187 @@
+<!doctype html><html><head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Case Study 2 — evaluation report</title><style>
+    :root{--ink:#1b1f24;--muted:#5c6570;--line:#e2e5ea;--paper:#ffffff;--soft:#f5f6f8;
+          --rf:#2f8f5b;--ru:#b7791f;--wf:#c0392b;--wu:#7f8c8d;--accent:#2b5c8a;}
+    *{box-sizing:border-box} body{margin:0;background:#eceef1;color:var(--ink);
+      font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;}
+    .page{max-width:900px;margin:0 auto;background:var(--paper);padding:34px 40px 56px;}
+    h1{font-size:24px;margin:0 0 4px} h2{font-size:16px;margin:30px 0 10px;
+       border-bottom:2px solid var(--line);padding-bottom:5px}
+    .sub{color:var(--muted);margin:0 0 14px;font-size:14px}
+    .banner{background:#fff7e6;border:1px solid #f0d79a;border-left:4px solid #d9a520;
+      border-radius:8px;padding:10px 14px;font-size:13px;color:#7a5b12;margin:14px 0 8px}
+    .meta{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--muted);
+      background:var(--soft);border-radius:8px;padding:9px 13px;margin:10px 0 4px}
+    table{border-collapse:collapse;width:100%;font-size:13.5px;margin:8px 0}
+    th,td{border:1px solid var(--line);padding:7px 10px;text-align:center}
+    th{background:var(--soft);font-weight:600} td.l,th.l{text-align:left}
+    .num{font-variant-numeric:tabular-nums}
+    .matrix{display:grid;grid-template-columns:120px 1fr 1fr;gap:8px;margin:12px 0}
+    .mcell{border-radius:10px;padding:16px;color:#fff;min-height:92px;display:flex;
+      flex-direction:column;justify-content:space-between}
+    .mhead{background:var(--soft);color:var(--muted);font-size:12px;font-weight:600;
+      display:flex;align-items:center;justify-content:center;text-align:center;border-radius:8px}
+    .mcell .big{font-size:30px;font-weight:700;line-height:1}
+    .mcell .lab{font-size:12px;opacity:.9}
+    .rf{background:var(--rf)} .ru{background:var(--ru)} .wf{background:var(--wf)} .wu{background:var(--wu)}
+    .flag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;
+      background:rgba(255,255,255,.22);padding:2px 6px;border-radius:20px;margin-top:4px}
+    .card{border:1px solid var(--line);border-radius:12px;padding:15px 17px;margin:12px 0;background:var(--paper)}
+    .card .tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+      padding:3px 9px;border-radius:20px;color:#fff}
+    .tag.wf{background:var(--wf)} .tag.ru{background:var(--ru)}
+    .card h3{font-size:14px;margin:8px 0 4px}
+    .kv{font-size:12.5px;color:var(--muted);margin:2px 0}
+    .kv b{color:var(--ink)}
+    .quote{background:var(--soft);border-radius:8px;padding:10px 12px;font-size:13px;margin:8px 0}
+    .stmt{font-size:12.5px;margin:4px 0;padding-left:20px;position:relative}
+    .stmt.bad::before{content:"✗";position:absolute;left:0;color:var(--wf);font-weight:700}
+    .stmt.ok::before{content:"✓";position:absolute;left:0;color:var(--rf);font-weight:700}
+    .foot{margin-top:26px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+    @media print{body{background:#fff}.page{max-width:none;padding:0}}
+    </style></head><body><div class="page">
+<h1>EU AI Act compliance agent — evaluation report</h1>
+<p class="sub">Does an automated faithfulness metric catch legal-classification errors? Correctness and faithfulness measured as two independent axes.</p>
+<div class="meta">Generator: microsoft/phi-4 (local, vLLM, redacted inputs) &nbsp;|&nbsp; Judge (RAGAS faithfulness): openai-compatible:Qwen/Qwen2.5-72B-Instruct-AWQ &nbsp;|&nbsp; Retriever: BAAI/bge-base-en-v1.5 &nbsp;|&nbsp; 2026-09-25</div>
+<div class="banner"><b>Demonstration run.</b> These figures are from a development generator on a subset, for method validation. They are not the graded results; the graded run uses the frozen generator over all 215 cases.</div>
+<h2>Summary across the three configurations</h2>
+<table><tr><th class="l">Configuration</th><th>n</th><th>Accuracy</th><th>High-risk F1</th><th>Mean faithfulness</th><th>Right + unfaithful</th><th>Faithful but wrong</th></tr>
+<tr><td class="l">Baseline 1 · plain LLM (no retrieval)</td><td class="num">215</td><td class="num">69%</td><td class="num">0.638</td><td class="num">n/a</td><td class="num">—</td><td class="num">—</td></tr>
+<tr><td class="l">Baseline 2 · standard RAG</td><td class="num">215</td><td class="num">88%</td><td class="num">0.814</td><td class="num">0.548</td><td class="num">79</td><td class="num">14</td></tr>
+<tr><td class="l">Proposed agent · structured RAG</td><td class="num">215</td><td class="num">86%</td><td class="num">0.786</td><td class="num">0.455</td><td class="num">93</td><td class="num">17</td></tr>
+</table>
+<h2>Four-bucket outcome — Proposed agent · structured RAG</h2>
+<p class="sub">Correctness (rows) against faithfulness (columns). The two off-diagonal cells are the findings.</p>
+<div class="matrix"><div></div><div class="mhead">Faithful (grounded)</div><div class="mhead">Unfaithful</div><div class="mhead">Label right</div><div class="mcell rf"><div class="big">91</div><div class="lab">right + faithful</div></div><div class="mcell ru"><div class="big">93</div><div class="lab">right + unfaithful<span class="flag">FINDING</span></div></div><div class="mhead">Label wrong</div><div class="mcell wf"><div class="big">17</div><div class="lab">wrong + faithful<span class="flag">HEADLINE</span></div></div><div class="mcell wu"><div class="big">14</div><div class="lab">wrong + unfaithful</div></div></div>
+<p class="kv">Mean faithfulness when the label is right: <b>0.450</b> &nbsp;·&nbsp; when wrong: <b>0.487</b> &nbsp;·&nbsp; correctness–faithfulness correlation: <b>-0.043</b></p>
+<h2>Divergence cases — where the label and the grounding disagree</h2>
+<div class="card">
+<span class="tag wf">faithful but WRONG</span>
+<div class="kv" style="margin-top:8px"><b>anx3-207</b> · Proposed agent · structured RAG · faithfulness <b>1.000</b> · predicted <b>high-risk</b> vs gold <b>not-high-risk</b></div>
+<h3>System description</h3><div class="quote">An AI system that analyses the content of the application or claim received by a court, as well as prior case law patterns to pre-classify the type of the case (e.g. contract law, inheritance case, etc.).</div>
+<h3>Model's explanation</h3><div class="quote">The AI system is intended to analyse the content of applications or claims received by a court and prior case law patterns to pre-classify the type of case. This falls under the intended purpose of assisting judicial authorities in &#x27;applying the law to a concrete set of facts&#x27; as described in Passage 1 and Passage 5, which corresponds to Annex III Point 8(a). The system assists in the judicial decision-making process by pre-classifying cases, which is a significant function for individual decisions. According to Passage 4, it is sufficient for the AI system to assist in either resear</div>
+<h3>Judge's per-statement grounding check</h3>
+<div class="stmt ok">The AI system is intended to analyse the content of applications or claims received by a court and prior case law patterns to pre-classify the type of case. <span style="color:#8a8f96">— This statement aligns with the description of an AI system that assists in the judicial pr</span></div>
+<div class="stmt ok">This falls under the intended purpose of assisting judicial authorities in &#x27;applying the law to a concrete set of facts&#x27; as described in Passage 1 and <span style="color:#8a8f96">— Passages 1 and 5 describe the application of law to facts as a core judicial activity, and</span></div>
+<div class="stmt ok">The system assists in the judicial decision-making process by pre-classifying cases, which is a significant function for individual decisions. <span style="color:#8a8f96">— Pre-classifying cases is indeed a significant function for individual decisions, as it hel</span></div>
+<div class="stmt ok">According to Passage 4, it is sufficient for the AI system to assist in either researching and interpreting facts and the law or applying the law to a concrete  <span style="color:#8a8f96">— Passage 4 explicitly states that assisting in either of these activities is sufficient for</span></div>
+<div class="stmt ok">The system does not meet any of the exemption conditions in Article 6(3) as it does not perform a narrow procedural task, improve a previously completed human a <span style="color:#8a8f96">— Based on the context provided, the system&#x27;s function of pre-classifying cases does no</span></div>
+<div class="stmt ok">Therefore, it is classified as high-risk. <span style="color:#8a8f96">— Given that the system assists in a significant judicial function and does not meet any exe</span></div>
+</div>
+<div class="card">
+<span class="tag wf">faithful but WRONG</span>
+<div class="kv" style="margin-top:8px"><b>anx3-066</b> · Proposed agent · structured RAG · faithfulness <b>0.857</b> · predicted <b>high-risk</b> vs gold <b>not-high-risk</b></div>
+<h3>System description</h3><div class="quote">AI-enabled grade calculator intended to be used by an educational institution to process data related to assessment and test grades obtained by students during the academic period which determines the final grade of the students’ learning outcomes for the year. Such an AI system is designed to perform a simple calculation of the average grade, taking into account the grades and weights of each assessment, and test the output of the system as a numerical value representing the average grade, which is then used by th</div>
+<h3>Model's explanation</h3><div class="quote">The AI system&#x27;s intended purpose is to process data related to assessment and test grades to determine the final grade of students&#x27; learning outcomes for the year. According to Passage 1, AI systems that evaluate learning outcomes and make an evaluation towards a final decision affecting educational and professional pathways based on a summative assessment fall under point 3(b) of Annex III. The system described performs a calculation of the average grade, which is used by the teacher to inform their final evaluation of the student’s performance. This aligns with the definition of su</div>
+<h3>Judge's per-statement grounding check</h3>
+<div class="stmt ok">The AI system&#x27;s intended purpose is to process data related to assessment and test grades to determine the final grade of students&#x27; learning outcomes  <span style="color:#8a8f96">— This statement is supported by the context, which discusses AI systems that determine a st</span></div>
+<div class="stmt ok">AI systems that evaluate learning outcomes and make an evaluation towards a final decision affecting educational and professional pathways based on a summative  <span style="color:#8a8f96">— This is explicitly stated in the context, indicating that such systems fall under point 3(</span></div>
+<div class="stmt bad">The system described performs a calculation of the average grade, which is used by the teacher to inform their final evaluation of the student’s performance. <span style="color:#8a8f96">— The context does not specify that the system calculates an average grade; it only mentions</span></div>
+<div class="stmt ok">This aligns with the definition of summative evaluation in Passage 2, which has a significant impact on the learner’s educational trajectory. <span style="color:#8a8f96">— Passage 2 defines summative evaluation as having a significant impact on the learner’s edu</span></div>
+<div class="stmt ok">The system falls within Annex III point 3(b). <span style="color:#8a8f96">— The context clearly states that AI systems making evaluations towards a final decision aff</span></div>
+<div class="stmt ok">The system does not meet the exemption conditions in Article 6(3)(a)-(d) because it plays a decisive role in the assessment by providing a specific numerical ou <span style="color:#8a8f96">— The context indicates that if an AI system produces a specific recommendation or evaluatio</span></div>
+</div>
+<div class="card">
+<span class="tag wf">faithful but WRONG</span>
+<div class="kv" style="margin-top:8px"><b>anx3-023</b> · Proposed agent · structured RAG · faithfulness <b>0.800</b> · predicted <b>high-risk</b> vs gold <b>not-high-risk</b></div>
+<h3>System description</h3><div class="quote">AI system to categorise customers based on their gender to offer/improve personalised experience for customers. The AI system captures keystrokes, analyses them to assign a gender to the customer to offer/improve personalized experience (e.g., personalised advertising).The AI system deploys biometric categorisation (assigns a customer to a certain category based on their biometric data).</div>
+<h3>Model's explanation</h3><div class="quote">The AI system&#x27;s intended purpose is to categorise customers based on their gender using biometric data (keystrokes). This falls under Annex III Point 1(b) for biometric categorisation, as it assigns individuals to specific categories based on biometric data. According to Passage 3, biometric categorisation systems are high-risk if they categorise individuals based on sensitive attributes or characteristics protected under Article 9(1) GDPR, which includes sex. The system does not meet any exemption conditions in Article 6(3)(a)-(d) because it performs profiling by categorising individuals</div>
+<h3>Judge's per-statement grounding check</h3>
+<div class="stmt ok">The AI system&#x27;s intended purpose is to categorise customers based on their gender using biometric data (keystrokes). <span style="color:#8a8f96">— The context states that an AI system inferring emotions of an individual from keystrokes i</span></div>
+<div class="stmt ok">This falls under Annex III Point 1(b) for biometric categorisation. <span style="color:#8a8f96">— Point 1(b) of Annex III AI Act covers AI systems intended to be used for biometric categor</span></div>
+<div class="stmt ok">Biometric categorisation systems are high-risk if they categorise individuals based on sensitive attributes or characteristics protected under Article 9(1) GDPR <span style="color:#8a8f96">— Recital 54 AI Act clarifies that sensitive attributes or characteristics are those protect</span></div>
+<div class="stmt bad">The system does not meet any exemption conditions in Article 6(3)(a)-(d) because it performs profiling by categorising individuals based on gender. <span style="color:#8a8f96">— The context does not provide information about the exemptions in Article 6(3)(a)-(d) or wh</span></div>
+<div class="stmt ok">Therefore, it is classified as high-risk. <span style="color:#8a8f96">— Based on the previous points, if the system categorises individuals based on gender using </span></div>
+</div>
+<div class="card">
+<span class="tag wf">faithful but WRONG</span>
+<div class="kv" style="margin-top:8px"><b>anx3-050</b> · Proposed agent · structured RAG · faithfulness <b>0.778</b> · predicted <b>high-risk</b> vs gold <b>not-high-risk</b></div>
+<h3>System description</h3><div class="quote">An AI-system, supervised by a human worker, makes forecasts for grid imbalances, e.g. 15- minutes interval. That forecasts support operational planning, but also directly influence market players. A malfunctioning in the AI-system could mislead both external and internal actors, potentially causing suboptimal dispatch or hedging strategies. This can affect grid stability, which can lead to malfunctioning in electricity supply.</div>
+<h3>Model's explanation</h3><div class="quote">The AI system&#x27;s intended purpose is to make forecasts for grid imbalances, which directly influences operational planning and market players. This falls under the &#x27;supply of electricity&#x27; use case in critical infrastructure as described in Passage 2 and Passage 3, specifically under Annex III point 2 of the AI Act. The system is intended to be used in the management and operation of the supply of electricity, which is a high-risk use case. The system&#x27;s malfunctioning could lead to grid instability and affect electricity supply, aligning with the risk considerations in Passag</div>
+<h3>Judge's per-statement grounding check</h3>
+<div class="stmt bad">The AI system&#x27;s intended purpose is to make forecasts for grid imbalances. <span style="color:#8a8f96">— The context does not provide specific information about an AI system making forecasts for </span></div>
+<div class="stmt bad">The forecasts directly influence operational planning and market players. <span style="color:#8a8f96">— The context does not mention the direct influence of forecasts on operational planning and</span></div>
+<div class="stmt ok">The system falls under the &#x27;supply of electricity&#x27; use case in critical infrastructure as described in Passage 2 and Passage 3, specifically under Ann <span style="color:#8a8f96">— Passages 2 and 3 clearly define the &#x27;supply of electricity&#x27; use case and its inc</span></div>
+<div class="stmt ok">The system is intended to be used in the management and operation of the supply of electricity, which is a high-risk use case. <span style="color:#8a8f96">— Passage 3 confirms that an AI system used in the management and operation of the supply of</span></div>
+<div class="stmt ok">The system&#x27;s malfunctioning could lead to grid instability and affect electricity supply. <span style="color:#8a8f96">— Recital 55 AI Act, as mentioned in Passage 1, indicates that a failure or malfunctioning o</span></div>
+<div class="stmt ok">The system does not meet the exemption conditions in Article 6(3) as it plays a decisive role in the assessment or decision-making process. <span style="color:#8a8f96">— Passage 4 explains that if an AI system produces a specific recommendation or evaluation, </span></div>
+</div>
+<div class="card">
+<span class="tag wf">faithful but WRONG</span>
+<div class="kv" style="margin-top:8px"><b>anx3-044</b> · Baseline 2 · standard RAG · faithfulness <b>0.750</b> · predicted <b>high-risk</b> vs gold <b>not-high-risk</b></div>
+<h3>System description</h3><div class="quote">An AI system used for electricity grid optimization by forecasting the energy demand.</div>
+<h3>Model's explanation</h3><div class="quote">According to Passage 2, an AI system used in the management and operation of the supply of electricity should be considered high risk if it is intended to be used by an electricity entity identified as a critical entity under the CER Directive. The AI system described is used for electricity grid optimization by forecasting energy demand, which falls under the management and operation of the supply of electricity. Therefore, if the electricity entity using this AI system is identified as a critical entity by a Member State, the AI system would be classified as high-risk under the criteria outl</div>
+<h3>Judge's per-statement grounding check</h3>
+<div class="stmt ok">An AI system used in the management and operation of the supply of electricity should be considered high risk if it is intended to be used by an electricity ent <span style="color:#8a8f96">— This statement is directly supported by Passage 2.</span></div>
+<div class="stmt bad">The AI system described is used for electricity grid optimization by forecasting energy demand. <span style="color:#8a8f96">— The context does not provide specific information about the function of the AI system bein</span></div>
+<div class="stmt ok">The AI system falls under the management and operation of the supply of electricity. <span style="color:#8a8f96">— This is supported by the context in Passage 1, which defines what constitutes an AI system</span></div>
+<div class="stmt ok">If the electricity entity using this AI system is identified as a critical entity by a Member State, the AI system would be classified as high-risk under the cr <span style="color:#8a8f96">— This is a direct inference from Passage 2, which states that an AI system used by an elect</span></div>
+</div>
+<div class="card">
+<span class="tag wf">faithful but WRONG</span>
+<div class="kv" style="margin-top:8px"><b>anx3-031</b> · Proposed agent · structured RAG · faithfulness <b>0.750</b> · predicted <b>high-risk</b> vs gold <b>not-high-risk</b></div>
+<h3>System description</h3><div class="quote">An AI system intended to be used by the automotive industry to help prevent accidents by detecting when a driver loses focus (i.e., drowsiness, falling asleep, experiencing sudden health issues). The AI system tracks body posture, facial expressions, eye closures and gazes via installed cameras and motion detectors in a vehicle; analyses the collected data to alert the driver or assume control of the vehicle, and safely bring it to a stop.</div>
+<h3>Model's explanation</h3><div class="quote">The AI system&#x27;s intended purpose is to prevent accidents by detecting when a driver loses focus, which involves monitoring body posture, facial expressions, eye closures, and gazes. This falls under the use case of &#x27;critical infrastructure&#x27; as described in Passage 1 and Passage 3, specifically under points a, c, and e, which involve monitoring and detecting situations that may lead to physical harm, preventing physical harm, and mitigating consequences of possible physical harm. The system is intended to protect the physical integrity of the vehicle, a component of critical infr</div>
+<h3>Judge's per-statement grounding check</h3>
+<div class="stmt ok">The AI system&#x27;s intended purpose is to prevent accidents by detecting when a driver loses focus. <span style="color:#8a8f96">— This aligns with the description of an AI system that monitors and detects situations whic</span></div>
+<div class="stmt ok">The AI system monitors body posture, facial expressions, eye closures, and gazes. <span style="color:#8a8f96">— This is consistent with the types of biometric data that can be used to infer states, as d</span></div>
+<div class="stmt ok">This falls under the use case of &#x27;critical infrastructure&#x27; as described in Passage 1 and Passage 3, specifically under points a, c, and e. <span style="color:#8a8f96">— The descriptions in points a, c, and e of Passages 1 and 3 include monitoring, preventing,</span></div>
+<div class="stmt ok">Points a, c, and e involve monitoring and detecting situations that may lead to physical harm, preventing physical harm, and mitigating consequences of possible <span style="color:#8a8f96">— These points explicitly describe these functions as part of the criteria for classifying a</span></div>
+<div class="stmt ok">The system is intended to protect the physical integrity of the vehicle, a component of critical infrastructure. <span style="color:#8a8f96">— A vehicle can be considered part of critical infrastructure, especially in contexts where </span></div>
+<div class="stmt bad">The Article 6(3) filter does not apply here because the system performs profiling by analyzing biometric data to infer the driver&#x27;s state. <span style="color:#8a8f96">— The context provided does not mention Article 6(3) or any filters related to profiling. It</span></div>
+</div>
+<div class="card">
+<span class="tag wf">faithful but WRONG</span>
+<div class="kv" style="margin-top:8px"><b>anx3-044</b> · Proposed agent · structured RAG · faithfulness <b>0.714</b> · predicted <b>high-risk</b> vs gold <b>not-high-risk</b></div>
+<h3>System description</h3><div class="quote">An AI system used for electricity grid optimization by forecasting the energy demand.</div>
+<h3>Model's explanation</h3><div class="quote">The AI system is intended for &#x27;electricity grid optimization by forecasting the energy demand,&#x27; which aligns with the &#x27;supply of electricity use case in critical infrastructure&#x27; as described in Passage 1. This falls under Annex III point 3, which includes the supply of electricity. According to Passage 2, such an AI system is considered high-risk if used by an electricity entity identified as critical under the CER Directive. The description does not provide information about exemption conditions in Article 6(3) or whether the system performs profiling. Therefore, without m</div>
+<h3>Judge's per-statement grounding check</h3>
+<div class="stmt ok">The AI system is intended for electricity grid optimization by forecasting the energy demand. <span style="color:#8a8f96">— The statement describes an application that fits within the scope of the &#x27;supply of e</span></div>
+<div class="stmt ok">This use case aligns with the supply of electricity use case in critical infrastructure as described in Passage 1. <span style="color:#8a8f96">— Passage 1 outlines various aspects of the supply of electricity, including demand response</span></div>
+<div class="stmt bad">This use case falls under Annex III point 3, which includes the supply of electricity. <span style="color:#8a8f96">— The context does not specify the exact points of Annex III; it only mentions the supply of</span></div>
+<div class="stmt ok">According to Passage 2, such an AI system is considered high-risk if used by an electricity entity identified as critical under the CER Directive. <span style="color:#8a8f96">— Passage 2 explicitly states that an AI system used by an electricity entity identified as </span></div>
+<div class="stmt ok">The description does not provide information about exemption conditions in Article 6(3). <span style="color:#8a8f96">— The provided passages do not mention Article 6(3) or any exemption conditions.</span></div>
+<div class="stmt ok">The description does not provide information on whether the system performs profiling. <span style="color:#8a8f96">— There is no mention of profiling in the provided context.</span></div>
+</div>
+<div class="card">
+<span class="tag wf">faithful but WRONG</span>
+<div class="kv" style="margin-top:8px"><b>anx3-041</b> · Proposed agent · structured RAG · faithfulness <b>0.700</b> · predicted <b>high-risk</b> vs gold <b>not-high-risk</b></div>
+<h3>System description</h3><div class="quote">An AI system used for predictive maintenance which allows for more accurate predictions regarding infrastructure maintenance as part of a range of safety measures.</div>
+<h3>Model's explanation</h3><div class="quote">The AI system is described as being used for predictive maintenance, which aligns with the purpose of monitoring and detecting the need to schedule maintenance and inspections to prevent risks to the physical integrity of critical infrastructure (Passage 1, point b). This falls under the critical infrastructure use case in Annex III point 2(c) of the AI Act, specifically related to the supply of electricity (Passage 2). The system is intended to be used as a safety component in critical infrastructure, which is listed as high-risk under point (2) of Annex III (Passage 4). The system does not m</div>
+<h3>Judge's per-statement grounding check</h3>
+<div class="stmt bad">The AI system is used for predictive maintenance. <span style="color:#8a8f96">— The context does not explicitly state that the AI system is used for predictive maintenanc</span></div>
+<div class="stmt ok">The AI system monitors and detects the need to schedule maintenance and inspections. <span style="color:#8a8f96">— This is directly stated in the context as one of the safety functions an AI system can per</span></div>
+<div class="stmt ok">The AI system prevents risks to the physical integrity of critical infrastructure. <span style="color:#8a8f96">— The context specifies that an AI system can be classified as a safety component if it prev</span></div>
+<div class="stmt ok">The AI system falls under the critical infrastructure use case in Annex III point 2(c) of the AI Act. <span style="color:#8a8f96">— The context states that point (2) of Annex III lists the supply of water, gas, heating or </span></div>
+<div class="stmt ok">The AI system is related to the supply of electricity. <span style="color:#8a8f96">— The context discusses the AI system in relation to the supply of electricity, which is inc</span></div>
+<div class="stmt ok">The AI system is intended to be used as a safety component in critical infrastructure. <span style="color:#8a8f96">— The context outlines various functions that qualify an AI system as a safety component in </span></div>
+</div>
+<div class="card">
+<span class="tag wf">faithful but WRONG</span>
+<div class="kv" style="margin-top:8px"><b>anx3-078</b> · Baseline 2 · standard RAG · faithfulness <b>0.667</b> · predicted <b>high-risk</b> vs gold <b>not-high-risk</b></div>
+<h3>System description</h3><div class="quote">AI-enabled confirmation of suspicious behaviour: During an online test, a human proctor observes a student exhibiting suspicious behaviour, such as consistently looking away from the screen or typing in a pattern that suggests they may be copying from a hidden source and uses an AI system to confirm or deny his suspicions. The AI system is trained on a dataset of known cheating behaviours and can identify patterns that are indicative of academic misconduct. The AI system analyses the student’s data and provides a r</div>
+<h3>Model's explanation</h3><div class="quote">The AI system is intended to be used for monitoring and detecting prohibited behaviour during tests, specifically to identify cheating behaviours such as unusual keystroke patterns or excessive mouse movements (Passage 1). This aligns with the description in Passage 3, which specifies that AI systems used for monitoring and detecting during tests, particularly in controlled testing situations, fall under the high-risk category in Annex III, point 3(d). The system&#x27;s role in confirming or denying suspicions of cheating during an online test places it within the context of a summative assess</div>
+<h3>Judge's per-statement grounding check</h3>
+<div class="stmt ok">The AI system is intended to be used for monitoring and detecting prohibited behaviour during tests. <span style="color:#8a8f96">— This is supported by Passage 3, which states that the AI system must be intended to be use</span></div>
+<div class="stmt ok">The AI system identifies cheating behaviours such as unusual keystroke patterns or excessive mouse movements. <span style="color:#8a8f96">— Passage 1 mentions that AI systems may encompass a range of technologies, including keystr</span></div>
+<div class="stmt ok">AI systems used for monitoring and detecting during tests in controlled testing situations fall under the high-risk category in Annex III, point 3(d) of the EU  <span style="color:#8a8f96">— Passage 3 explicitly states that the reference to tests in point 3(d) of Annex III means t</span></div>
+<div class="stmt ok">The system&#x27;s role in confirming or denying suspicions of cheating during an online test places it within the context of a summative assessment. <span style="color:#8a8f96">— Passage 3 indicates that the key elements to assess whether the monitoring and detection o</span></div>
+<div class="stmt bad">The AI system&#x27;s output provides specific patterns and anomalies that materially influence the human proctor&#x27;s decision. <span style="color:#8a8f96">— While the AI system is used to detect prohibited behaviors, the context does not specify t</span></div>
+<div class="stmt bad">The AI system plays a decisive role in the assessment process. <span style="color:#8a8f96">— The context provided does not state that the AI system plays a decisive role in the assess</span></div>
+</div>
+<div class="card">
+<span class="tag wf">faithful but WRONG</span>
+<div class="kv" style="margin-top:8px"><b>anx3-081</b> · Baseline 2 · standard RAG · faithfulness <b>0.667</b> · predicted <b>not-high-risk</b> vs gold <b>high-risk</b></div>
+<h3>System description</h3><div class="quote">AI system intended to be used for candidate or contractor sourcing across online platforms A recruitment agency deploys an AI-enabled tool to search social media, professional sites or job boards, and its own CV databases. Recruiters input pre-defined criteria such as years of experience, technical skills, or educational background. The system processes unstructured and structured data, identifies matching profiles, and generates a shortlist of potential candidates or contractors who are natural persons.</div>
+<h3>Model's explanation</h3><div class="quote">The AI system described is intended for candidate or contractor sourcing by searching social media, professional sites, or job boards, and its own CV databases. It processes data to identify matching profiles and generate a shortlist based on pre-defined criteria. According to Passage 1, AI systems used for candidate sourcing fall under recruitment activities. However, Passage 2 clarifies that AI systems performing narrow procedural tasks, such as generating job descriptions or sourcing candidates without substantially affecting the application process, are considered to perform a narrow proce</div>
+<h3>Judge's per-statement grounding check</h3>
+<div class="stmt ok">The AI system is intended for candidate or contractor sourcing. <span style="color:#8a8f96">— The context mentions that AI systems may be used in recruitment, including for candidate s</span></div>
+<div class="stmt bad">The AI system searches social media, professional sites, or job boards, and its own CV databases. <span style="color:#8a8f96">— The context does not specify the sources from which the AI system gathers data.</span></div>
+<div class="stmt bad">The AI system processes data to identify matching profiles. <span style="color:#8a8f96">— The context does not explicitly state that the AI system processes data to identify matchi</span></div>
+<div class="stmt bad">The AI system generates a shortlist based on pre-defined criteria. <span style="color:#8a8f96">— The context does not mention the generation of a shortlist by the AI system.</span></div>
+<div class="stmt ok">AI systems used for candidate sourcing fall under recruitment activities. <span style="color:#8a8f96">— The context clearly states that recruitment includes activities such as the identification</span></div>
+<div class="stmt ok">AI systems performing narrow procedural tasks, such as generating job descriptions or sourcing candidates without substantially affecting the application proces <span style="color:#8a8f96">— The context specifies that AI systems performing narrow procedural tasks, like generating </span></div>
+</div>
+<div class="foot">Correctness is a lookup against the frozen Commission labels (no model). Faithfulness is RAGAS, computed by a separate judge over the explanation versus the retrieved passages. The two are independent by design; the off-diagonal cells are the contribution. Development run for method validation, not the graded result.</div>
+</div></body></html>
